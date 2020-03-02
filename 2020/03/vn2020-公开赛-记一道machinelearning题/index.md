@@ -3,7 +3,7 @@
 
 ## 前言
 
-前两天在RoarCTF 交流群里看到腹黑师傅发W&M招新赛的链接，就上去看了看。发现MISC有一道MachineLearning题：`[V&N2020 公开赛]ML 第一步`，碰巧这段时间在搞一个DeepLearning项目，就尝试了一下，第一次做出来DL题。:stuck_out_tongue_winking_eye::stuck_out_tongue_winking_eye::stuck_out_tongue_winking_eye:
+前两天在RoarCTF 交流群里看到腹黑师傅发W&M招新赛的链接，就上去看了看。发现MISC有一道MachineLearning题：`[V&N2020 公开赛]ML 第一步`，碰巧这段时间在搞一个DeepLearning项目，就尝试了一下，第一次做出来ML题。:stuck_out_tongue_winking_eye::stuck_out_tongue_winking_eye::stuck_out_tongue_winking_eye:
 
 ## 初探
 
