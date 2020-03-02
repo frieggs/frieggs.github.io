@@ -120,7 +120,7 @@ NOnono~~~
 ## 脚本
 
 ```python
-# Auther: frieggs
+# Author: frieggs
 # Blog: https://blog.frieggs.com
 
 from tensorflow.keras.models import Sequential
@@ -223,7 +223,7 @@ s.close()
 
 ![训练时平均绝对误差随轮次的变化曲线](image-20200302225417919.png)
 
-![蓝色源数据与红色预测数据分散图](image-20200302225444604.png)
+![源数据(蓝色)与预测数据(红色)散布图](image-20200302225444604.png)
 
 
 
