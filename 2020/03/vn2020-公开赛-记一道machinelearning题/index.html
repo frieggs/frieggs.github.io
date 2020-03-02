@@ -1,0 +1,409 @@
+<!doctype html><html lang=zh><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>[V&N2020 公开赛] 记一道MachineLearning题 | 被强煎的蛋 | frieggs's blog</title><meta name=Description content="被强煎的蛋 | frieggs's blog"><meta property="og:title" content="[V&N2020 公开赛] 记一道MachineLearning题"><meta property="og:description" content="前言 前两天在RoarCTF 交流群里看到腹黑师傅发W&M招新赛的链接，就上去看了看。发现MISC有一道MachineLearning题"><meta property="og:type" content="article"><meta property="og:url" content="/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/"><meta property="article:published_time" content="2020-03-02T11:52:02+08:00"><meta property="article:modified_time" content="2020-03-02T11:52:02+08:00"><meta property="og:site_name" content="被强煎的蛋 | frieggs's blog"><meta name=twitter:card content="summary"><meta name=twitter:title content="[V&N2020 公开赛] 记一道MachineLearning题"><meta name=twitter:description content="前言 前两天在RoarCTF 交流群里看到腹黑师傅发W&M招新赛的链接，就上去看了看。发现MISC有一道MachineLearning题"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel=canonical href=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=prev href=/2020/02/windows%E4%B8%8Bphpstorm-docker%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/><link rel=stylesheet href=/lib/fontawesome-free/all.min.9a680b90260b5106d79f4075491ab31daafa7429eff686453c40b58357309649.css integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="><link rel=stylesheet href=/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><link rel=stylesheet href=/css/style.min.5313a7cd528e285a82280f60228e0e2501181a5445bde1bc99d7c7dbdb7a4767.css integrity="sha256-UxOnzVKOKFqCKA9gIo4OJQEYGlRFveG8mdfH29t6R2c="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"[V\x26N2020 公开赛] 记一道MachineLearning题","mainEntityOfPage":{"@type":"WebPage","@id":"\/2020\/03\/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98\/"},"image":{"@type":"ImageObject","url":"\/cover.png","width":800,"height":600},"genre":"posts","keywords":"MachineLearning, CTF","wordcount":986,"url":"\/2020\/03\/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98\/","datePublished":"2020-03-02T11:52:02\x2b08:00","dateModified":"2020-03-02T11:52:02\x2b08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"frieggs","logo":{"@type":"ImageObject","url":"\/logo.png","width":127,"height":40}},"description":""}</script></head><body><script>if(!window.localStorage||!window.localStorage.getItem('theme')){window.isDark=window.matchMedia('(prefers-color-scheme: dark)').matches;}else{window.isDark=(window.localStorage&&window.localStorage.getItem('theme'))==='dark';}
+window.isDark&&document.body.classList.add('dark-theme');</script><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class="header-title animated bounceIn"><a href=/>被强煎的蛋 | frieggs's blog</a></div><div class=menu><a class=menu-item href=/posts/>文章</a><a class=menu-item href=/tags/>标签</a><a class=menu-item href=/categories/>分类</a><a class=menu-item href=/about/>关于</a><a class=menu-item href=/ title=English><i class="fas fa-language fa-fw"></i></a><a href=javascript:void(0); class=theme-switch title=切换主题>
+<i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a></div></div></header><header class=mobile id=header-mobile><div class=header-wrapper><div class=header-container><div class="header-title animated bounceIn"><a href=/>被强煎的蛋 | frieggs's blog</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/>文章</a><a class=menu-item href=/tags/>标签</a><a class=menu-item href=/categories/>分类</a><a class=menu-item href=/about/>关于</a><a class=menu-item href=/ title=English><i class="fas fa-language fa-fw"></i></a><a href=javascript:void(0); class=theme-switch title=切换主题>
+<i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a></div></div></header><script>window.desktopHeaderMode="fixed";window.mobileHeaderMode="auto";</script><main class=main><div class=container><article class="page single"><h1 class="single-title animated flipInX">[V&N2020 公开赛] 记一道MachineLearning题</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a class=author href=/ rel=author target=_blank><i class="fas fa-user-circle fa-fw"></i>frieggs</a>
+</span>&nbsp;<span class=post-category>收录于&nbsp;
+<span><a href=/categories/machinelearning><i class="far fa-folder fa-fw"></i>Machine learning</a></span></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i><time datetime=2020-03-02>2020-03-02</time>&nbsp;
+<i class="fas fa-pencil-alt fa-fw"></i>约 986 字&nbsp;
+<i class="far fa-clock fa-fw"></i>预计阅读 2 分钟&nbsp;</div></div><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><div class=toc id=toc-static><details><summary><div class=toc-title><span>目录</span>
+<span><i class="details icon fas fa-angle-down"></i></span></div></summary><div class=toc-content id=toc-content-static><nav id=TableOfContents><ul><li><a href=#前言>前言</a></li><li><a href=#初探>初探</a></li><li><a href=#脚本>脚本</a></li><li><a href=#结果>结果</a></li></ul></nav></div></details></div><div class=content id=content><h2 id=前言>前言</h2><p>前两天在RoarCTF 交流群里看到腹黑师傅发W&M招新赛的链接，就上去看了看。发现MISC有一道MachineLearning题：<code>[V&N2020 公开赛]ML 第一步</code>，碰巧这段时间在搞一个DeepLearning项目，就尝试了一下，第一次做出来DL题。😜😜😜</p><h2 id=初探>初探</h2><p>拿到域名和端口，国际惯例nc上去😄</p><p>题目意思：给你70组数据，让你预测10组数据，要求loss小于0.06</p><p>显然这是个回归（regression）问题，这里我选择tensorflow v2的keras api搭建网络，真香😋</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>$ nc node3.buuoj.cn <span class=m>25115</span>
+hello,whats your name?
+frieggs
+hi,frieggs
+There is a func and some data to train,please guess my func and answer my question:
+When you need help,please take this num to ask <span class=k>for</span> help:1
+Now I will give you <span class=m>70</span> data:<span class=o>[</span>ENTER<span class=o>]</span>
+
+<span class=nv>x</span><span class=o>=</span>0.23293131229477126,y<span class=o>=</span>-0.6546346007667923<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.9141812803441588,y<span class=o>=</span>-1.923420422937762<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5978186731303873,y<span class=o>=</span>-1.4330594279625735<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.9081244761918499,y<span class=o>=</span>-1.9252163352184513<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6397127738411532,y<span class=o>=</span>-1.5098826967326122<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.4126789955389717,y<span class=o>=</span>-1.0610931549067264<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.4723890788951174,y<span class=o>=</span>-1.164921025969659<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.14372339309751103,y<span class=o>=</span>-0.4077362577217497<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.9225541186759473,y<span class=o>=</span>-1.9643974463302152<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7711563780945728,y<span class=o>=</span>-1.702248722890862<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.2038953054962851,y<span class=o>=</span>-0.5997436441843649<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6263053110417236,y<span class=o>=</span>-1.4816287831706654<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.32514168647239805,y<span class=o>=</span>-0.8664563573379703<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6249863260140601,y<span class=o>=</span>-1.4632787128261502<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.2706873892963526,y<span class=o>=</span>-0.667958062941054<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.18529895655996909,y<span class=o>=</span>-0.5153729906817134<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.43797173474171236,y<span class=o>=</span>-1.1505276391445383<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.09206362654732536,y<span class=o>=</span>-0.22902442460467892<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.28674442651700094,y<span class=o>=</span>-0.7568451882263891<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.8473679877638907,y<span class=o>=</span>-1.7847257038214273<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5199051988574164,y<span class=o>=</span>-1.3132961377962167<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.23662738696874386,y<span class=o>=</span>-0.6775411613309307<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5105118320718761,y<span class=o>=</span>-1.2921978879411098<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5022470922340977,y<span class=o>=</span>-1.3112019941405897<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7752705900700582,y<span class=o>=</span>-1.695869752384335<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.24518941046122678,y<span class=o>=</span>-0.6728831661626552<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5476635719996427,y<span class=o>=</span>-1.3350604937270167<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.14555038196250714,y<span class=o>=</span>-0.4502351420894147<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5402691798964878,y<span class=o>=</span>-1.2881121079051063<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.060376524271612886,y<span class=o>=</span>-0.22952293246414246<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6685815075710536,y<span class=o>=</span>-1.5457709729242959<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.3891074774923087,y<span class=o>=</span>-1.0099949516551094<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.8497091497091634,y<span class=o>=</span>-1.833082162965835<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5308089077776695,y<span class=o>=</span>-1.3000807761787088<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5319205111100348,y<span class=o>=</span>-1.3027475694565198<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7460198741302583,y<span class=o>=</span>-1.6791168349347692<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.4361965526637247,y<span class=o>=</span>-1.0805461179967266<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.8381685198758803,y<span class=o>=</span>-1.802818419639961<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.49170712019766427,y<span class=o>=</span>-1.2995792517865328<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.09375206370396205,y<span class=o>=</span>-0.3210610110426531<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.23191284838776027,y<span class=o>=</span>-0.6098419736980532<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.3861293210803447,y<span class=o>=</span>-1.050336512975188<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6393526599126003,y<span class=o>=</span>-1.5280334701843157<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6831673785649255,y<span class=o>=</span>-1.6218118230629652<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7607856571980453,y<span class=o>=</span>-1.6892705354914876<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6556675697457789,y<span class=o>=</span>-1.540235578785005<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.25976364113975015,y<span class=o>=</span>-0.672125184716639<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6126008719466577,y<span class=o>=</span>-1.5310814384436477<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.9694970227101206,y<span class=o>=</span>-1.9325120143495362<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6949118217585081,y<span class=o>=</span>-1.5717537157195178<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.08188742975790797,y<span class=o>=</span>-0.21082472094809357<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7870408155959038,y<span class=o>=</span>-1.7347261736185102<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.25292479781129673,y<span class=o>=</span>-0.7236291459828087<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.25519691318721127,y<span class=o>=</span>-0.6465866313592334<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.022113229287526015,y<span class=o>=</span>0.0013596887514838174<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7467069251250199,y<span class=o>=</span>-1.6701056178020084<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.2420825936331218,y<span class=o>=</span>-0.7123246046772168<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.703562175733554,y<span class=o>=</span>-1.6269793627781495<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.4336818991326158,y<span class=o>=</span>-1.0629238800984522<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.21475120663954939,y<span class=o>=</span>-0.5480934889951207<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7213355828205726,y<span class=o>=</span>-1.63253228990537<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7794141621830423,y<span class=o>=</span>-1.755053624663293<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.2777075023004413,y<span class=o>=</span>-0.7901581455824338<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.3568414571627093,y<span class=o>=</span>-0.9602735787303361<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.513602580825322,y<span class=o>=</span>-1.3143973009694436<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.6108141481891833,y<span class=o>=</span>-1.4581997442253065<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.9668204533936676,y<span class=o>=</span>-1.972803885674858<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.7890379052688813,y<span class=o>=</span>-1.8087162106504862<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.5277245729370588,y<span class=o>=</span>-1.308632554138398<span class=p>;</span>
+<span class=nv>x</span><span class=o>=</span>0.44539342462609965,y<span class=o>=</span>-1.1234586310392338<span class=p>;</span>
+okay,do you guess my func?I will ask you <span class=m>10</span> questions.If your loss less than 0.06,i will give you the FLAG<span class=o>[</span>ENTER<span class=o>]</span>
+
+When <span class=nv>x</span><span class=o>=</span>0.5389179669047208,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.4984903405356802,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.8770009254960851,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.45269982284910104,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.6850424168303579,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.6730912681959299,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.928994296997916,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.5356037645753124,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.035392897170888005,y<span class=o>=</span>?
+<span class=m>1</span>
+When <span class=nv>x</span><span class=o>=</span>0.8092257545967552,y<span class=o>=</span>?
+<span class=m>1</span>
+NOnono~~~
+</code></pre></td></tr></table></div></div><h2 id=脚本>脚本</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span><span class=lnt>92
+</span><span class=lnt>93
+</span><span class=lnt>94
+</span><span class=lnt>95
+</span><span class=lnt>96
+</span><span class=lnt>97
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=c1># Auther: frieggs</span>
+<span class=c1># Blog: https://blog.frieggs.com</span>
+
+<span class=kn>from</span> <span class=nn>tensorflow.keras.models</span> <span class=kn>import</span> <span class=n>Sequential</span>
+<span class=kn>from</span> <span class=nn>tensorflow.keras.layers</span> <span class=kn>import</span> <span class=n>Dense</span><span class=p>,</span> <span class=n>Activation</span>
+<span class=kn>from</span> <span class=nn>tensorflow</span> <span class=kn>import</span> <span class=n>keras</span>
+<span class=kn>import</span> <span class=nn>matplotlib.pyplot</span> <span class=kn>as</span> <span class=nn>plt</span>
+<span class=kn>import</span> <span class=nn>numpy</span> <span class=kn>as</span> <span class=nn>np</span>
+<span class=kn>import</span> <span class=nn>pandas</span> <span class=kn>as</span> <span class=nn>pd</span>
+<span class=kn>import</span> <span class=nn>socket</span>
+<span class=kn>import</span> <span class=nn>re</span>
+<span class=kn>import</span> <span class=nn>time</span>
+
+<span class=k>def</span> <span class=nf>getMessage</span><span class=p>():</span>
+    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+    <span class=n>content</span> <span class=o>=</span> <span class=n>s</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>1024</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span>
+    <span class=k>print</span><span class=p>(</span><span class=n>content</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>content</span>
+
+<span class=k>def</span> <span class=nf>sendMessage</span><span class=p>(</span><span class=n>text</span><span class=o>=</span><span class=s2>&#34;&#34;</span><span class=p>):</span>
+    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+    <span class=k>print</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
+    <span class=n>s</span><span class=o>.</span><span class=n>send</span><span class=p>((</span><span class=nb>str</span><span class=p>(</span><span class=n>text</span><span class=p>)</span> <span class=o>+</span> <span class=s2>&#34;</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>)</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
+
+<span class=k>def</span> <span class=nf>plot_history</span><span class=p>(</span><span class=n>history</span><span class=p>):</span>
+  <span class=n>hist</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>DataFrame</span><span class=p>(</span><span class=n>history</span><span class=o>.</span><span class=n>history</span><span class=p>)</span>
+  <span class=n>hist</span><span class=p>[</span><span class=s1>&#39;epoch&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>history</span><span class=o>.</span><span class=n>epoch</span>
+  <span class=n>plt</span><span class=o>.</span><span class=n>figure</span><span class=p>()</span>
+  <span class=n>plt</span><span class=o>.</span><span class=n>xlabel</span><span class=p>(</span><span class=s1>&#39;Epoch&#39;</span><span class=p>)</span>
+  <span class=n>plt</span><span class=o>.</span><span class=n>ylabel</span><span class=p>(</span><span class=s1>&#39;Mean Abs Error [MPG]&#39;</span><span class=p>)</span>
+  <span class=n>plt</span><span class=o>.</span><span class=n>plot</span><span class=p>(</span><span class=n>hist</span><span class=p>[</span><span class=s1>&#39;epoch&#39;</span><span class=p>],</span> <span class=n>hist</span><span class=p>[</span><span class=s1>&#39;mae&#39;</span><span class=p>],</span>
+           <span class=n>label</span><span class=o>=</span><span class=s1>&#39;Train Error&#39;</span><span class=p>)</span>
+  <span class=n>plt</span><span class=o>.</span><span class=n>ylim</span><span class=p>([</span><span class=mi>0</span><span class=p>,</span><span class=mi>2</span><span class=p>])</span>
+  <span class=n>plt</span><span class=o>.</span><span class=n>legend</span><span class=p>()</span>
+  <span class=n>plt</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+
+<span class=n>s</span> <span class=o>=</span> <span class=n>socket</span><span class=o>.</span><span class=n>socket</span><span class=p>()</span>
+<span class=n>s</span><span class=o>.</span><span class=n>connect</span><span class=p>((</span><span class=s1>&#39;node3.buuoj.cn&#39;</span><span class=p>,</span> <span class=mi>25465</span><span class=p>))</span>
+<span class=n>getMessage</span><span class=p>()</span>
+<span class=n>sendMessage</span><span class=p>(</span><span class=s2>&#34;frieggs&#34;</span><span class=p>)</span>
+<span class=n>getMessage</span><span class=p>()</span>
+<span class=n>sendMessage</span><span class=p>()</span>
+<span class=n>content</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+<span class=n>content</span> <span class=o>+=</span> <span class=n>getMessage</span><span class=p>()</span>
+<span class=n>content</span> <span class=o>+=</span> <span class=n>getMessage</span><span class=p>()</span>
+<span class=n>content</span> <span class=o>+=</span> <span class=n>getMessage</span><span class=p>()</span>
+<span class=n>content</span> <span class=o>+=</span> <span class=n>getMessage</span><span class=p>()</span>
+<span class=k>print</span><span class=p>(</span><span class=n>content</span><span class=p>)</span>
+<span class=n>x</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>findall</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;x=(.*?),y=.*?;&#39;</span><span class=p>,</span> <span class=n>content</span><span class=p>)</span>
+<span class=n>y</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>findall</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;x=.*?,y=(.*?);&#39;</span><span class=p>,</span> <span class=n>content</span><span class=p>)</span>
+<span class=n>x</span> <span class=o>=</span> <span class=p>[</span><span class=nb>float</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>x</span><span class=p>]</span>
+<span class=n>y</span> <span class=o>=</span> <span class=p>[</span><span class=nb>float</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>y</span><span class=p>]</span>
+<span class=n>X_train</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+<span class=n>Y_train</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>y</span><span class=p>)</span>
+
+<span class=c1># 构建一个顺序模型</span>
+<span class=n>model</span> <span class=o>=</span> <span class=n>Sequential</span><span class=p>()</span>
+
+<span class=c1># 在模型中添加64单元的全连接层</span>
+<span class=n>model</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>Dense</span><span class=p>(</span><span class=mi>64</span><span class=p>,</span> <span class=n>input_shape</span><span class=o>=</span><span class=p>(</span><span class=mi>1</span><span class=p>,)))</span>
+<span class=c1># 用relu作为激活函数</span>
+<span class=n>model</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>Activation</span><span class=p>(</span><span class=s2>&#34;relu&#34;</span><span class=p>))</span>
+
+<span class=n>model</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>Dense</span><span class=p>(</span><span class=mi>64</span><span class=p>))</span>
+<span class=n>model</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>Activation</span><span class=p>(</span><span class=s2>&#34;relu&#34;</span><span class=p>))</span>
+
+<span class=n>model</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>Dense</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span>
+
+<span class=s1>&#39;&#39;&#39;
+</span><span class=s1>编译模型，使用adam加速训练
+</span><span class=s1>采用均方误差（Mean Square Error，MSE）作为损失函数训练模型
+</span><span class=s1>采用平均绝对误差（Mean Absolute Error，MAE）评价模型
+</span><span class=s1>&#39;&#39;&#39;</span>
+<span class=n>model</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=n>optimizer</span><span class=o>=</span><span class=s1>&#39;adam&#39;</span><span class=p>,</span> <span class=n>loss</span><span class=o>=</span><span class=s1>&#39;mse&#39;</span><span class=p>,</span> <span class=n>metrics</span><span class=o>=</span><span class=p>[</span><span class=s1>&#39;mae&#39;</span><span class=p>])</span>
+
+<span class=c1># 打印模型结构摘要</span>
+<span class=k>print</span><span class=p>(</span><span class=n>model</span><span class=o>.</span><span class=n>summary</span><span class=p>())</span>
+
+<span class=c1># 训练300轮</span>
+<span class=n>history</span> <span class=o>=</span> <span class=n>model</span><span class=o>.</span><span class=n>fit</span><span class=p>(</span><span class=n>X_train</span><span class=p>,</span> <span class=n>Y_train</span><span class=p>,</span> <span class=n>epochs</span><span class=o>=</span><span class=mi>300</span><span class=p>)</span>
+<span class=c1># 可视化训练过程</span>
+<span class=n>plot_history</span><span class=p>(</span><span class=n>history</span><span class=p>)</span>
+<span class=n>sendMessage</span><span class=p>()</span>
+<span class=c1># 记录训练集数据的离散点</span>
+<span class=n>plt</span><span class=o>.</span><span class=n>scatter</span><span class=p>(</span><span class=n>X_train</span><span class=p>,</span> <span class=n>Y_train</span><span class=p>)</span>
+<span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>10</span><span class=p>):</span>
+    <span class=n>res</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>findall</span><span class=p>(</span><span class=s1>&#39;When x=(.*?),y=?&#39;</span><span class=p>,</span> <span class=n>getMessage</span><span class=p>())</span>
+    <span class=n>X_p</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>([</span><span class=nb>float</span><span class=p>(</span><span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>])])</span>
+    <span class=c1># 用X预测Y的值</span>
+    <span class=n>Y_p</span> <span class=o>=</span> <span class=n>model</span><span class=o>.</span><span class=n>predict</span><span class=p>(</span><span class=n>X_p</span><span class=p>)[</span><span class=mi>0</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span>
+    <span class=n>sendMessage</span><span class=p>(</span><span class=n>Y_p</span><span class=p>)</span>
+    <span class=c1># 红色加号标注预测点</span>
+    <span class=n>plt</span><span class=o>.</span><span class=n>plot</span><span class=p>(</span><span class=n>X_p</span><span class=p>,</span> <span class=n>Y_p</span><span class=p>,</span> <span class=s1>&#39;r+&#39;</span><span class=p>)</span>
+<span class=n>plt</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+<span class=n>getMessage</span><span class=p>()</span>
+<span class=n>s</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+
+</code></pre></td></tr></table></div></div><h2 id=结果>结果</h2><p><figure><a class=lightgallery href=image-20200302225417919.png title=训练时平均绝对误差随轮次的变化曲线 data-thumbnail=image-20200302225417919.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200302225417919.png, image-20200302225417919.png 1.5x, image-20200302225417919.png 2x" data-src=image-20200302225417919.png alt=训练时平均绝对误差随轮次的变化曲线></a><figcaption class=image-caption>训练时平均绝对误差随轮次的变化曲线</figcaption></figure></p><p><figure><a class=lightgallery href=image-20200302225444604.png title=蓝色源数据与红色预测数据分散图 data-thumbnail=image-20200302225444604.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200302225444604.png, image-20200302225444604.png 1.5x, image-20200302225444604.png 2x" data-src=image-20200302225444604.png alt=蓝色源数据与红色预测数据分散图></a><figcaption class=image-caption>蓝色源数据与红色预测数据分散图</figcaption></figure></p><p><figure><a class=lightgallery href=image-20200302225604654.png title=image-20200302225604654 data-thumbnail=image-20200302225604654.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200302225604654.png, image-20200302225604654.png 1.5x, image-20200302225604654.png 2x" data-src=image-20200302225604654.png alt=image-20200302225604654></a><figcaption class=image-caption>image-20200302225604654</figcaption></figure></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>本文于 2020-03-02 更新</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/ data-title="[V&N2020 公开赛] 记一道MachineLearning题" data-hashtags=MachineLearning,CTF><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/ data-hashtag=MachineLearning><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/ data-title="[V&N2020 公开赛] 记一道MachineLearning题"><i class="fab fa-weibo fa-fw"></i></a><a href=javascript:void(0); title="分享到 人人" data-sharer=renren data-url=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/><i class="fab fa-renren fa-fw"></i></a><a href=javascript:void(0); title="分享到 百度" data-sharer=baidu data-url=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/ data-title="[V&N2020 公开赛] 记一道MachineLearning题"><i class="loveit it-baidu-fill"></i></a><a href=javascript:void(0); title="分享到 Evernote" data-sharer=evernote data-url=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/ data-title="[V&N2020 公开赛] 记一道MachineLearning题"><i class="fab fa-evernote fa-fw"></i></a></span></div></div></div><div class=post-info-more><section><span><a href=/tags/machinelearning><i class="fas fa-tag fa-fw"></i>MachineLearning</a>
+</span>&nbsp;<span>
+<a href=/tags/ctf><i class="fas fa-tag fa-fw"></i>CTF</a>
+</span>&nbsp;</section><section><span><a href=javascript:window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/2020/02/windows%E4%B8%8Bphpstorm-docker%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/ class=prev rel=prev title="Windows下PhpStorm + Docker调试环境"><i class="fas fa-angle-left fa-fw"></i>Windows下PhpStorm + Docker调试环境</a></div></div><div class=comment></div></article></div></main><footer class=footer><div class=copyright><div class=copyright-line>由 <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreffer">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a></div><div class=copyright-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>frieggs</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><a href=# class="dynamic-to-top animated faster" id=dynamic-to-top><span>&nbsp;</span>
+</a><script>document.addEventListener('DOMContentLoaded',function(){lightGallery(document.getElementById('content'),{selector:'.lightgallery',speed:400,hideBarsDelay:2000,thumbnail:true,exThumbImage:'data-thumbnail',thumbWidth:80,thumbContHeight:80,});});</script><link rel=stylesheet href=/lib/iconfont/iconfont.min.87733e31cc299c77d28479c59ca286e921fa964f11356559e96012b783b7bb29.css integrity="sha256-h3M+McwpnHfShHnFnKKG6SH6lk8RNWVZ6WASt4O3uyk="><link rel=stylesheet href=/lib/lightgallery/lightgallery.min.a0f67639490aba5d9a250783c0aa0ed69f83a6f151fb0d7b9fb617c9dbc54565.css integrity="sha256-oPZ2OUkKul2aJQeDwKoO1p+DpvFR+w17n7YXydvFRWU="><script src=/lib/smooth-scroll/smooth-scroll.polyfills.min.54590077ee163035c3dd38dc034e9f6915ecbe680dd832f449afa21672cab116.js integrity="sha256-VFkAd+4WMDXD3TjcA06faRXsvmgN2DL0Sa+iFnLKsRY="></script><script src=/lib/sharer/sharer.min.9c88f86c7f0820287113f6236200459832693656e80d7556cc80a93dfbd45813.js integrity="sha256-nIj4bH8IIChxE/YjYgBFmDJpNlboDXVWzICpPfvUWBM="></script><script src=/lib/lazysizes/lazysizes.min.876b4c12685e991d88378c1b6dd3638fd2da0c88f3c24da1ada950c1f26604e1.js integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE="></script><script src=/lib/lightgallery/lightgallery.min.7a84c63ab156d68e4a7269487c9c65a4eb34b0c7864f2d3fd2b87f7c664480d3.js integrity="sha256-eoTGOrFW1o5KcmlIfJxlpOs0sMeGTy0/0rh/fGZEgNM="></script><script src=/lib/lightgallery/lg-thumbnail.min.eab31af8f90835b7ab674b2dd2474841039bc01022aa312f80dde6e22fde58d7.js integrity="sha256-6rMa+PkINberZ0st0kdIQQObwBAiqjEvgN3m4i/eWNc="></script><script src=/lib/lightgallery/lg-zoom.min.e3a7e6bb4a69f8627654ba9e0ab1252971bcfb400538dbb0605db9a3342ce5b9.js integrity="sha256-46fmu0pp+GJ2VLqeCrElKXG8+0AFONuwYF25ozQs5bk="></script><script src=/js/theme.min.1482fc67bfa2c3b8cebe476d0037b9321b5b7a8a1525b547b94143948be90e9e.js integrity="sha256-FIL8Z7+iw7jOvkdtADe5MhtbeooVJbVHuUFDlIvpDp4="></script></body></html>
