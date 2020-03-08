@@ -81,7 +81,7 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 ```
 
-因为反序列化时做了验证，且序列化字符串里不能含有R(调用一个callable对象)，所以不太方便直接getshell，因此我们目标是让`restricted_loads(base64.b64decode(pickle_data)) == Animal(secret.name, secret.category)` 为True。
+因为反序列化时做了验证，且opcodes里不能含有R(调用一个callable对象)，所以不太方便直接getshell，因此我们目标是让`restricted_loads(base64.b64decode(pickle_data)) == Animal(secret.name, secret.category)` 为True。
 
 因为secret未知，所以首先想到的是泄露secret，但是此题是行不通的。换个思路，既然不能泄露secret，那我么就改掉secret，这时候妈妈告诉我先知上有[这么一篇文章](https://xz.aliyun.com/t/7012)。
 
@@ -467,7 +467,7 @@ cookie伪造后以admin身份登入，发现hint（其实源码里可以发现hi
 
 #### 内网机1（10.10.1.12）
 
-限制6个字符的eval，我卡在这边好久，后来想到一个巧妙的payload，不知道师傅们是怎么解的
+限制6个字符的eval，我卡在这边好久，后来自己琢磨出这个巧妙的（自认为）payload，不知道师傅们是怎么解的
 
 ```
 index.php?cc=`$cc`;whoami
