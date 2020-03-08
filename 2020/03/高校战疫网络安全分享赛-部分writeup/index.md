@@ -559,6 +559,8 @@ flag{xGJpVxvjqRcwCQZR}
 
 ## MISC
 
+### ez_mem&usb
+
 ![从流量中导出data.zip](image-20200309054913169.png)
 
 导出的zip文件头有多余的数据，删除后多余数据后打开压缩包拿到内存dump文件，用volatility分析内存
