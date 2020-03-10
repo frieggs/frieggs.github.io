@@ -537,7 +537,7 @@ java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStre
 
 String line;
 while ((line = reader.readLine()) != null) {
-out.println(line);
+	out.println(line);
 }
 %>
 ```
@@ -717,7 +717,7 @@ if __name__ == "__main__":
 
 ```shell
 $python usb.py
-用proxifier代理python程序到内网
+[+] Found : flag[69200835784ec3ed8d2a64e73fe913c0]
 #把[]换成{}
 ```
 
